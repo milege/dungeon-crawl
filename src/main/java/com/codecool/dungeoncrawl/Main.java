@@ -39,6 +39,11 @@ public class Main extends Application {
         ui.add(healthLabel, 1, 0);
         ui.add(itemPickUpButton,0,1);
 
+        itemPickUpButton.setOnAction(onClick -> {
+            map.getPlayer().pickUpItem();
+            ui.requestFocus();
+        });
+
         BorderPane borderPane = new BorderPane();
 
         borderPane.setCenter(canvas);
@@ -51,6 +56,7 @@ public class Main extends Application {
 
         primaryStage.setTitle("Dungeon Crawl");
         primaryStage.show();
+        ui.requestFocus();
     }
 
     private void onKeyPressed(KeyEvent keyEvent) {
