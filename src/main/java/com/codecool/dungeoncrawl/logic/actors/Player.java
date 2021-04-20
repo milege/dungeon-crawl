@@ -29,18 +29,22 @@ public class Player extends Actor {
     }
 
     public void attackMonster(Actor monster, Cell nextCell) {
+        this.isInBattle = true;
+        monster.setInBattle(true);
         while (this.isAlive && monster.isAlive()) {
             monster.setHealth(monster.getHealth() - this.attackStrength);
             if (monster.getHealth() <= 0) {
                 monster.setAlive(false);
                 cell.setActor(null);
                 nextCell.setActor(this);
+                this.isInBattle = false;
                 cell = nextCell;
             } else {
                 this.health = this.health - monster.getAttackStrength();
             }
             if (this.health <= 0) {
                 this.isAlive = false;
+                monster.isInBattle = false;
                 cell.setActor(null);
             }
         }

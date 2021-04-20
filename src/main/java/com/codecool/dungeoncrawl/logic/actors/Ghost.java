@@ -16,7 +16,8 @@ public class Ghost extends Actor {
     public void move(int dx, int dy) {
         Cell nextCell = cell.getNeighbor(dx, dy);
 
-        if((nextCell.getTileName().equals("floor") || nextCell.getTileName().equals("wall")) && nextCell.getActor() == null){
+        if(!isInBattle && (nextCell.getTileName().equals("floor") || nextCell.getTileName().equals("wall")) &&
+                nextCell.getActor() == null){
             cell.setActor(null);
             nextCell.setActor(this);
             cell = nextCell;

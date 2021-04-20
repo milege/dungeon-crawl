@@ -9,6 +9,7 @@ public abstract class Actor implements Drawable {
     protected int health;
     protected int attackStrength;
     protected boolean isAlive = true;
+    protected boolean isInBattle = false;
 
     public Actor(Cell cell) {
         this.cell = cell;
@@ -53,8 +54,15 @@ public abstract class Actor implements Drawable {
         isAlive = alive;
     }
 
-        public void setCell(Cell cell) {
+    public void setCell(Cell cell) {
             this.cell = cell;
         }
 
+    public boolean isInBattle() {
+        return isInBattle;
     }
+
+    public void setInBattle(boolean inBattle) {
+        isInBattle = inBattle;
+    }
+}
