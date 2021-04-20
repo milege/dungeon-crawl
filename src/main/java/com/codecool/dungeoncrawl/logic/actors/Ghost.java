@@ -6,6 +6,7 @@ public class Ghost extends Actor {
     public Ghost(Cell cell) {
         super(cell);
         this.setAttackStrength(3);
+        this.setDefenseStrength(2);
         this.setHealth(12);
     }
 

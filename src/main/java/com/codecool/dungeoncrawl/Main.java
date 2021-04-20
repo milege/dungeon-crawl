@@ -26,6 +26,7 @@ public class Main extends Application {
     GraphicsContext context = canvas.getGraphicsContext2D();
     Label healthLabel = new Label();
     Label attackLabel = new Label();
+    Label defenseLabel = new Label();
     Label inventoryLabel = new Label();
     Button itemPickUpButton = new Button("Pick up item");
 
@@ -43,8 +44,10 @@ public class Main extends Application {
         ui.add(healthLabel, 1, 0);
         ui.add(new Label("Attack: "), 0, 1);
         ui.add(attackLabel, 1, 1);
-        ui.add(inventoryLabel, 0, 2);
-        ui.add(itemPickUpButton,0,3);
+        ui.add(new Label("Defense: "), 0, 2);
+        ui.add(defenseLabel, 1, 2);
+        ui.add(inventoryLabel, 0, 3);
+        ui.add(itemPickUpButton,0,4);
 
 
         itemPickUpButton.setOnAction(onClick -> {
@@ -110,6 +113,7 @@ public class Main extends Application {
         }
         healthLabel.setText("" + map.getPlayer().getHealth());
         attackLabel.setText("" + map.getPlayer().getAttackStrength());
+        defenseLabel.setText("" + map.getPlayer().getDefenseStrength());
         inventoryLabel.setText(map.getPlayer().getInventory().toString());
     }
 

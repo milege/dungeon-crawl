@@ -8,6 +8,7 @@ public abstract class Actor implements Drawable {
     protected Cell cell;
     protected int health;
     protected int attackStrength;
+    protected int defenseStrength;
     protected boolean isAlive = true;
     protected boolean isInBattle = false;
 
@@ -32,6 +33,14 @@ public abstract class Actor implements Drawable {
 
     public void setAttackStrength(int attackStrength) {
         this.attackStrength = attackStrength;
+    }
+
+    public int getDefenseStrength() {
+        return defenseStrength;
+    }
+
+    public void setDefenseStrength(int defenseStrength) {
+        this.defenseStrength = defenseStrength;
     }
 
     public Cell getCell() {
