@@ -11,6 +11,10 @@ public class Player extends Actor {
         super(cell);
     }
 
+    public Inventory getInventory(){
+        return inventory;
+    }
+
     public String getTileName() {
         return "player";
     }
