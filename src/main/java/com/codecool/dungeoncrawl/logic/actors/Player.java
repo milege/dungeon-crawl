@@ -18,6 +18,6 @@ public class Player extends Actor {
     public void pickUpItem(){
         Item pickedItem = getCell().getItem();
         getCell().setItem(null);
-        // pickedItem -> inventory
+        inventory.addToInventory(pickedItem);
     }
 }

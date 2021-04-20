@@ -9,4 +9,7 @@ public class Inventory {
         this.items = new ArrayList<Item>();
     }
 
+    public void addToInventory(Item item) {
+        items.add(item);
+    }
 }
