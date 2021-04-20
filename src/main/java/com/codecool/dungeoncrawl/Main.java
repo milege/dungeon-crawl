@@ -105,7 +105,7 @@ public class Main extends Application {
         attackLabel.setText("" + map.getPlayer().getAttackStrength());
     }
 
-    public void setMonsterHealthLabel(String monsterHealthLabelText) {
-        monsterHealthLabel.setText(monsterHealthLabelText);
-    }
+//    public void setMonsterHealthLabel(String monsterHealthLabelText) {
+//        monsterHealthLabel.setText(monsterHealthLabelText);
+//    }
 }

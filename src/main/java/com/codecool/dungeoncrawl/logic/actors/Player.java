@@ -4,8 +4,10 @@ import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.items.Item;
 
 public class Player extends Actor {
+
     public Player(Cell cell) {
         super(cell);
+        this.setAttackStrength(5);
     }
 
     public String getTileName() {
