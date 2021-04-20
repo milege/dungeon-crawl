@@ -5,10 +5,12 @@ import com.codecool.dungeoncrawl.logic.items.Inventory;
 import com.codecool.dungeoncrawl.logic.items.Item;
 
 public class Player extends Actor {
+
     private final Inventory inventory = new Inventory();
 
     public Player(Cell cell) {
         super(cell);
+        this.setAttackStrength(5);
     }
 
     public Inventory getInventory(){
