@@ -3,6 +3,7 @@ package com.codecool.dungeoncrawl;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
+import com.codecool.dungeoncrawl.logic.actors.Actor;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -16,6 +17,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+
 public class Main extends Application {
     GameMap map = MapLoader.loadMap();
     Canvas canvas = new Canvas(
@@ -25,6 +27,7 @@ public class Main extends Application {
     Label healthLabel = new Label();
     Label attackLabel = new Label();
     Label monsterHealthLabel = new Label();
+    Label inventoryLabel = new Label();
     Button itemPickUpButton = new Button("Pick up item");
 
     public static void main(String[] args) {
@@ -41,13 +44,16 @@ public class Main extends Application {
         ui.add(healthLabel, 1, 0);
         ui.add(new Label("Attack: "), 0, 1);
         ui.add(attackLabel, 1, 1);
-        ui.add(new Label("Monster's Health: "), 0, 2);
-        ui.add(monsterHealthLabel, 1, 2);
-        ui.add(itemPickUpButton,0,3);
+        ui.add(inventoryLabel, 0, 2);
+        ui.add(new Label("Monster's Health: "), 0, 3);
+        ui.add(monsterHealthLabel, 1, 3);
+        ui.add(itemPickUpButton,0,4);
+
 
         itemPickUpButton.setOnAction(onClick -> {
             map.getPlayer().pickUpItem();
             ui.requestFocus();
+            refresh();
         });
 
         BorderPane borderPane = new BorderPane();
@@ -69,18 +75,22 @@ public class Main extends Application {
         switch (keyEvent.getCode()) {
             case UP:
                 map.getPlayer().move(0, -1);
+                map.moveMonsters();
                 refresh();
                 break;
             case DOWN:
                 map.getPlayer().move(0, 1);
+                map.moveMonsters();
                 refresh();
                 break;
             case LEFT:
                 map.getPlayer().move(-1, 0);
+                map.moveMonsters();
                 refresh();
                 break;
             case RIGHT:
                 map.getPlayer().move(1,0);
+                map.moveMonsters();
                 refresh();
                 break;
         }
@@ -103,6 +113,7 @@ public class Main extends Application {
         }
         healthLabel.setText("" + map.getPlayer().getHealth());
         attackLabel.setText("" + map.getPlayer().getAttackStrength());
+        inventoryLabel.setText(map.getPlayer().getInventory().toString());
     }
 
 //    public void setMonsterHealthLabel(String monsterHealthLabelText) {

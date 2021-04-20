@@ -80,5 +80,9 @@ public abstract class Actor implements Drawable {
 
     public void setAlive(boolean alive) {
         isAlive = alive;
+
+    public void setCell(Cell cell) {
+        this.cell = cell;
+
     }
 }
