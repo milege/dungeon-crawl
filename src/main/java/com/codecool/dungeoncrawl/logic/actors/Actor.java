@@ -5,46 +5,18 @@ import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.Drawable;
 
 public abstract class Actor implements Drawable {
-    private Cell cell;
-    private int health = 10;
-    private int attackStrength;
-    private boolean isAlive = true;
+    protected Cell cell;
+    protected int health;
+    protected int attackStrength;
+    protected boolean isAlive = true;
+    protected boolean isInBattle = false;
 
     public Actor(Cell cell) {
         this.cell = cell;
         this.cell.setActor(this);
     }
 
-    public void move(int dx, int dy) {
-        Cell nextCell = cell.getNeighbor(dx, dy);
-
-        if (nextCell.getTileName().equals("floor") && nextCell.getActor() == null) {
-            cell.setActor(null);
-            nextCell.setActor(this);
-            cell = nextCell;
-        } else if (nextCell.getActor() != null) {
-//            Main.setMonsterHealthLabel("" + cell.getNeighbor(dx, dy));
-            attackMonster(nextCell.getActor(), nextCell);
-        }
-    }
-
-    public void attackMonster(Actor monster, Cell nextCell) {
-        while (this.isAlive && monster.isAlive()) {
-            monster.setHealth(monster.getHealth() - this.attackStrength);
-            if (monster.getHealth() == 0) {
-                monster.setAlive(false);
-                cell.setActor(null);
-                nextCell.setActor(this);
-                cell = nextCell;
-            } else {
-                this.health = this.health - monster.getAttackStrength();
-            }
-            if (this.health == 0) {
-                this.isAlive = false;
-                cell.setActor(null);
-            }
-        }
-    }
+    public abstract void move(int dx, int dy);
 
     public int getHealth() {
         return health;
@@ -80,9 +52,17 @@ public abstract class Actor implements Drawable {
 
     public void setAlive(boolean alive) {
         isAlive = alive;
+    }
 
     public void setCell(Cell cell) {
-        this.cell = cell;
+            this.cell = cell;
+        }
 
+    public boolean isInBattle() {
+        return isInBattle;
+    }
+
+    public void setInBattle(boolean inBattle) {
+        isInBattle = inBattle;
     }
 }
