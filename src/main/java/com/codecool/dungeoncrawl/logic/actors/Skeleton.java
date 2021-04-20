@@ -7,6 +7,7 @@ public class Skeleton extends Actor {
     public Skeleton(Cell cell) {
         super(cell);
         this.setAttackStrength(2);
+        this.setDefenseStrength(1);
         this.setHealth(10);
     }
 

@@ -6,6 +6,7 @@ public class Faceless extends Actor {
     public Faceless(Cell cell) {
         super(cell);
         this.setAttackStrength(10);
+        this.setDefenseStrength(5);
         this.setHealth(50);
     }
 
