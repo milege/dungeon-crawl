@@ -27,6 +27,9 @@ public class Player extends Actor {
                 attackMonster(nextCell.getActor(), nextCell);
             } else if (nextCell.getTileName().equals("fence")) {
                 health --;
+                if (this.health <= 0) {
+                    manageFuneral();
+                }
             }
         }
     }
@@ -50,9 +53,8 @@ public class Player extends Actor {
                 }
             }
             if (this.health <= 0) {
-                isAlive = false;
+                manageFuneral();
                 monster.isInBattle = false;
-                cell.setActor(null);
             }
         }
     }
@@ -72,5 +74,11 @@ public class Player extends Actor {
             inventory.addToInventory(pickedItem);
             pickedItem.startAction(this);
         }
+    }
+
+    private void manageFuneral() {
+        isAlive = false;
+        cell.setActor(new Corpse(cell));
+        System.out.println("Game over! Rest in peace!");
     }
 }
