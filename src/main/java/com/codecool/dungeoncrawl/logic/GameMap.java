@@ -40,10 +40,13 @@ public class GameMap {
     }
 
     public void moveMonsters() {
-        int[][] directions = new int[][]{{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
         for (Actor monster : monsters) {
+            int[][] directions = new int[][]{{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
             Random random = new Random();
-            int[] direction = directions[random.nextInt(directions.length)];
+            int[] direction;
+            do {
+                direction = directions[random.nextInt(directions.length)];
+            } while (monster.getX()+direction[0] < 0 || monster.getX()+direction[0] >= width || monster.getY()+direction[1] < 0 || monster.getY()+direction[1] >= height) ;
             monster.move(direction[0], direction[1]);
         }
     }
