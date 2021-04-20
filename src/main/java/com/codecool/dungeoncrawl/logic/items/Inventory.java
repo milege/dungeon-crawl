@@ -13,6 +13,7 @@ public class Inventory {
         items.add(item);
     }
 
+    @Override
     public String toString() {
         StringBuilder contents = new StringBuilder();
         contents.append("Inventory:\n");

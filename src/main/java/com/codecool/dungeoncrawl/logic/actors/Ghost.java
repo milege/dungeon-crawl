@@ -5,6 +5,8 @@ import com.codecool.dungeoncrawl.logic.Cell;
 public class Ghost extends Actor {
     public Ghost(Cell cell) {
         super(cell);
+        this.setAttackStrength(3);
+        this.setHealth(12);
     }
 
     @Override
@@ -12,12 +14,12 @@ public class Ghost extends Actor {
 
     @Override
     public void move(int dx, int dy) {
-        Cell nextCell = getCell().getNeighbor(dx, dy);
+        Cell nextCell = cell.getNeighbor(dx, dy);
 
         if((nextCell.getTileName().equals("floor") || nextCell.getTileName().equals("wall")) && nextCell.getActor() == null){
-            getCell().setActor(null);
+            cell.setActor(null);
             nextCell.setActor(this);
-            setCell(nextCell);
+            cell = nextCell;
         }
     }
 
