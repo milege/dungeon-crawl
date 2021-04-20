@@ -6,7 +6,7 @@ public class Inventory {
     private final ArrayList<Item> items;
 
     public Inventory() {
-        this.items = new ArrayList<Item>();
+        this.items = new ArrayList<>();
     }
 
     public void addToInventory(Item item) {
@@ -17,7 +17,7 @@ public class Inventory {
         StringBuilder contents = new StringBuilder();
         contents.append("Inventory:\n");
         for (Item item : items) {
-            contents.append(String.format("%s \n", item.getTileName()));
+            contents.append(String.format("%s (%s)\n", item.getName(), item.getType()));
         }
         return String.valueOf(contents);
     }

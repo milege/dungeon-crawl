@@ -17,7 +17,9 @@ public class Player extends Actor {
 
     public void pickUpItem(){
         Item pickedItem = getCell().getItem();
-        getCell().setItem(null);
-        inventory.addToInventory(pickedItem);
+        if(pickedItem != null) {
+            getCell().setItem(null);
+            inventory.addToInventory(pickedItem);
+        }
     }
 }

@@ -42,7 +42,7 @@ public class MapLoader {
                             break;
                         case 'k':
                             cell.setType(CellType.FLOOR);
-                            new Key(cell);
+                            cell.setItem(new Key());
                             break;
                         default:
                             throw new RuntimeException("Unrecognized character: '" + line.charAt(x) + "'");
