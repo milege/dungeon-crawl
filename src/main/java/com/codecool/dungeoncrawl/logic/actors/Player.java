@@ -4,6 +4,8 @@ import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.items.Inventory;
 import com.codecool.dungeoncrawl.logic.items.Item;
 
+import java.sql.SQLOutput;
+
 public class Player extends Actor {
 
     private final Inventory inventory = new Inventory();
@@ -18,7 +20,7 @@ public class Player extends Actor {
     public void move(int dx, int dy) {
         Cell nextCell = cell.getNeighbor(dx, dy);
 
-        if (nextCell.getTileName().equals("floor") && nextCell.getActor() == null) {
+        if((nextCell.getTileName().equals("floor") && nextCell.getActor() == null) || (nextCell.getTileName().equals("door") && inventory.isInInventory("key"))) {
             cell.setActor(null);
             nextCell.setActor(this);
             cell = nextCell;
