@@ -122,8 +122,8 @@ public class Main extends Application {
 
         int playerCellX = map.getPlayer().getCell().getX();
         int playerCellY = map.getPlayer().getCell().getY();
-        int mapCenterX = map.getWidth() / 2;
-        int mapCenterY = map.getHeight() / 2;
+        int screenCenterX = 12;
+        int screenCenterY = 10;
         int visionRadius = map.getPlayer().getVision();
 
         for (int x = -visionRadius ; x <= visionRadius; x++) {
@@ -131,15 +131,15 @@ public class Main extends Application {
                 try {
                     Cell cell = map.getCell(playerCellX + x, playerCellY + y);
                     if (cell.getActor() != null) {
-                        Tiles.drawTile(context, cell.getActor(), mapCenterX + x, mapCenterY + y);
+                        Tiles.drawTile(context, cell.getActor(), screenCenterX + x, screenCenterY + y);
                     } else if (cell.getItem() != null) {
-                        Tiles.drawTile(context, cell.getItem(), mapCenterX + x, mapCenterY + y);
+                        Tiles.drawTile(context, cell.getItem(), screenCenterX + x, screenCenterY + y);
                     } else {
-                        Tiles.drawTile(context, cell, mapCenterX + x, mapCenterY + y);
+                        Tiles.drawTile(context, cell, screenCenterX + x, screenCenterY + y);
                     }
                 } catch (ArrayIndexOutOfBoundsException e) {
                     Cell emptyCell = map.getCell(0, 10);
-                    Tiles.drawTile(context, emptyCell, mapCenterX + x, mapCenterY + y);
+                    Tiles.drawTile(context, emptyCell, screenCenterX + x, screenCenterY + y);
                 }
             }
         }
