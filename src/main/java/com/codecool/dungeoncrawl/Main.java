@@ -95,6 +95,7 @@ public class Main extends Application {
                 refresh();
                 break;
         }
+        if (map.getPlayer().getCell().getTileName().equals("open door")) loadNewMap();
     }
 
     private void refresh() {
