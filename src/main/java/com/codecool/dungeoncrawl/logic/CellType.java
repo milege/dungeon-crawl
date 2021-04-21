@@ -6,7 +6,15 @@ public enum CellType {
     WALL("wall"),
     DOOR("door"),
     OPEN_DOOR("open door"),
-    FENCE("fence");
+    FENCE("fence"),
+    GRASS("grass"),
+    WALLFENCE("wall fence"),
+    WATER("water"),
+    DIRT("dirt");
+ /*   WATERCORNER("water corner"),
+    WATERRIGHT("water right"),
+    WATERLEFT("water left"),*/
+
 
     private final String tileName;
 

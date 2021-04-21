@@ -1,6 +1,7 @@
 package com.codecool.dungeoncrawl;
 
 import com.codecool.dungeoncrawl.logic.Cell;
+import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
 import com.codecool.dungeoncrawl.logic.actors.Actor;
@@ -21,7 +22,8 @@ import javafx.stage.Stage;
 
 
 public class Main extends Application {
-    GameMap map = MapLoader.loadMap();
+    GameMap map = MapLoader.loadMap("/map.txt", CellType.FLOOR);
+    GameMap firstMap;
     Canvas canvas = new Canvas(
             map.getWidth() * Tiles.TILE_WIDTH,
             map.getHeight() * Tiles.TILE_WIDTH);
@@ -111,6 +113,7 @@ public class Main extends Application {
                 refresh();
                 break;
         }
+        if (map.getPlayer().getCell().getTileName().equals("open door")) loadNewMap();
     }
 
     private void refresh() {
@@ -147,4 +150,9 @@ public class Main extends Application {
         inventoryLabel.setText(map.getPlayer().getInventory().toString());
     }
 
+    private void loadNewMap() {
+        firstMap = map;
+        map = MapLoader.loadMap("/map2.txt", CellType.GRASS);
+        refresh();
+    }
 }

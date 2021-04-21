@@ -4,8 +4,14 @@ import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.items.Inventory;
 import com.codecool.dungeoncrawl.logic.items.Item;
 
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import java.sql.SQLOutput;
 import java.util.Arrays;
+
 
 public class Player extends Actor {
 
@@ -24,11 +30,14 @@ public class Player extends Actor {
 
     @Override
     public void move(int dx, int dy) {
+        List<String> stepOptions = new ArrayList<>(Arrays.asList("floor", "grass", "open door"));
         if (isAlive) {
             Cell nextCell = cell.getNeighbor(dx, dy);
-            if ((nextCell.getTileName().equals("floor") && nextCell.getActor() == null) ||
-                    nextCell.getTileName().equals("open door")) {
+
+            if (stepOptions.contains(nextCell.getTileName()) && nextCell.getActor() == null) {
+              
                 manageMovementVisually(nextCell);
+
             } else if (nextCell.getActor() != null) {
                 attackMonster(nextCell.getActor(), nextCell);
             } else if (nextCell.getTileName().equals("fence")) {
