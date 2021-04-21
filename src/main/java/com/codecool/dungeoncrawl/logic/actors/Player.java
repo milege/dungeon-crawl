@@ -40,7 +40,6 @@ public class Player extends Actor {
         List<String> wallTypes = new ArrayList<>(Arrays.asList("wall", "wall fence"));
         if (isAlive) {
             Cell nextCell = cell.getNeighbor(dx, dy);
-
             if (stepOptions.contains(nextCell.getTileName()) && nextCell.getActor() == null) {
                 manageMovementVisually(nextCell);
             } else if (nextCell.getActor() != null) {
