@@ -13,7 +13,7 @@ import java.io.InputStream;
 import java.util.Scanner;
 
 public class MapLoader {
-    public static GameMap loadMap(String mapName) {
+    public static GameMap loadMap(String mapName, CellType cellType) {
         InputStream is = MapLoader.class.getResourceAsStream(mapName);
         Scanner scanner = new Scanner(is);
         int width = scanner.nextInt();
@@ -41,40 +41,49 @@ public class MapLoader {
                             cell.setType(CellType.FLOOR);
                             break;
                         case 's':
-                            cell.setType(CellType.FLOOR);
+                            cell.setType(cellType);
                             map.addMonster(new Skeleton(cell));
                             break;
                         case '@':
-                            cell.setType(CellType.FLOOR);
+                            cell.setType(cellType);
                             map.setPlayer(new Player(cell));
                             break;
                         case 'k':
-                            cell.setType(CellType.FLOOR);
+                            cell.setType(cellType);
                             cell.setItem(new Key());
                             break;
                         case 'S':
-                            cell.setType(CellType.FLOOR);
+                            cell.setType(cellType);
                             cell.setItem(new Sword());
                             break;
                         case 'D':
-                            cell.setType(CellType.FLOOR);
+                            cell.setType(cellType);
                             cell.setItem(new Shield());
                             break;
                         case 'p':
-                            cell.setType(CellType.FLOOR);
+                            cell.setType(cellType);
                             cell.setItem(new Potion());
                             break;
                         case 'g':
-                            cell.setType(CellType.FLOOR);
+                            cell.setType(cellType);
                             map.addMonster(new Ghost(cell));
                             break;
                         case 'f':
-                            cell.setType(CellType.FLOOR);
+                            cell.setType(cellType);
                             map.addMonster(new Faceless(cell));
                             break;
                         case 'd':
                             cell.setType(CellType.DOOR);
                             map.setDoor(cell);
+                            break;
+                        case ',':
+                            cell.setType(CellType.GRASS);
+                            break;
+                        case '|':
+                            cell.setType(CellType.WALLFENCE);
+                            break;
+                        case 'w':
+                            cell.setType(CellType.WATER);
                             break;
                         default:
                             throw new RuntimeException("Unrecognized character: '" + line.charAt(x) + "'");
