@@ -10,7 +10,8 @@ public enum CellType {
     GRASS("grass"),
     WALLFENCE("wall fence"),
     WATER("water"),
-    DIRT("dirt");
+    DIRT("dirt"),
+    STAIRS("stairs");
  /*   WATERCORNER("water corner"),
     WATERRIGHT("water right"),
     WATERLEFT("water left"),*/
