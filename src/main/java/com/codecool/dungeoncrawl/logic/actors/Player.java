@@ -5,10 +5,13 @@ import com.codecool.dungeoncrawl.logic.items.Inventory;
 import com.codecool.dungeoncrawl.logic.items.Item;
 
 import java.sql.SQLOutput;
+import java.util.Arrays;
 
 public class Player extends Actor {
 
     private final Inventory inventory = new Inventory();
+
+    private String name;
 
     public Player(Cell cell) {
         super(cell);
@@ -21,10 +24,9 @@ public class Player extends Actor {
     public void move(int dx, int dy) {
         if (isAlive) {
             Cell nextCell = cell.getNeighbor(dx, dy);
-            if ((nextCell.getTileName().equals("floor") && nextCell.getActor() == null) || nextCell.getTileName().equals("open door")) {
-                cell.setActor(null);
-                nextCell.setActor(this);
-                cell = nextCell;
+            if ((nextCell.getTileName().equals("floor") && nextCell.getActor() == null) ||
+                    nextCell.getTileName().equals("open door")) {
+                manageMovementVisually(nextCell);
             } else if (nextCell.getActor() != null) {
                 attackMonster(nextCell.getActor(), nextCell);
             } else if (nextCell.getTileName().equals("fence")) {
@@ -32,8 +34,20 @@ public class Player extends Actor {
                 if (this.health <= 0) {
                     manageFuneral();
                 }
+            } else if (nextCell.getTileName().equals("wall")) {
+                for (Developer developer : Developer.values()) {
+                    if (name.equals(developer.getDeveloperName())) {
+                        manageMovementVisually(nextCell);
+                    }
+                }
             }
         }
+    }
+
+    private void manageMovementVisually(Cell nextCell) {
+        cell.setActor(null);
+        nextCell.setActor(this);
+        cell = nextCell;
     }
 
     public void attackMonster(Actor monster, Cell nextCell) {
@@ -45,10 +59,8 @@ public class Player extends Actor {
             }
             if (monster.getHealth() <= 0) {
                 monster.setAlive(false);
-                cell.setActor(null);
-                nextCell.setActor(this);
+                manageMovementVisually(nextCell);
                 this.isInBattle = false;
-                cell = nextCell;
             } else {
                 if (this.defenseStrength < monster.getAttackStrength()) {
                     this.health = this.health + this.defenseStrength - monster.getAttackStrength();
@@ -67,6 +79,14 @@ public class Player extends Actor {
 
     public String getTileName() {
         return "player";
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public void pickUpItem() {
