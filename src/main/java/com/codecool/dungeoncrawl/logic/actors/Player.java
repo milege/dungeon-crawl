@@ -15,17 +15,25 @@ import java.util.Arrays;
 
 public class Player extends Actor {
 
+    private static Player instance;
     private final Inventory inventory = new Inventory();
     private int vision;
 
     private String name;
 
-    public Player(Cell cell) {
+    private Player(Cell cell) {
         super(cell);
         this.setAttackStrength(5);
         this.setDefenseStrength(0);
         this.setHealth(50);
         this.vision = 5;
+    }
+
+    public static Player getInstance(Cell cell){
+        if(instance == null){
+            instance = new Player(cell);
+        }
+        return instance;
     }
 
     @Override

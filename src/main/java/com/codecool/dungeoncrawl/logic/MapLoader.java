@@ -43,7 +43,7 @@ public class MapLoader {
                             break;
                         case '@':
                             cell.setType(cellType);
-                            map.setPlayer(new Player(cell));
+                            map.setPlayer(Player.getInstance(cell));
                             break;
                         case 'k':
                             cell.setType(cellType);
