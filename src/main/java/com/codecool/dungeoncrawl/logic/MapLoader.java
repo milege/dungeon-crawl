@@ -87,12 +87,18 @@ public class MapLoader {
                         case 'q':
                             cell.setType(CellType.DIRT);
                             break;
+                        case '1':
+                            cell.setType(CellType.TREES);
+                            break;
                         case 't':
                             cell.setType(CellType.FLOOR);
                             cell.setItem(new Torch());
                             break;
                         case '+':
                             cell.setType(CellType.STAIRS);
+                            break;
+                        case '-':
+                            cell.setType(CellType.DOWNSTAIRS);
                             break;
                         default:
                             throw new RuntimeException("Unrecognized character: '" + line.charAt(x) + "'");
