@@ -33,7 +33,7 @@ public class Main extends Application {
     Label defenseLabel = new Label();
     Label inventoryLabel = new Label();
     Button itemPickUpButton = new Button("Pick up item");
-    Button nameSubmitButton = new Button("+");
+    Button nameSubmitButton = new Button("Submit");
 
     public static void main(String[] args) {
         launch(args);
@@ -46,7 +46,7 @@ public class Main extends Application {
         ui.setPrefWidth(200);
         ui.setPadding(new Insets(10));
 
-        ui.add(new Label("Enter your name: "), 0, 0);
+        ui.add(new Label("Enter name: "), 0, 0);
         ui.add(nameField, 0, 1);
         ui.add(nameSubmitButton,1,1);
         ui.add(new Label("Name: "), 0, 3);
