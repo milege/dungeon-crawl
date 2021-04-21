@@ -45,6 +45,7 @@ public class MapLoader {
                             cell.setType(cellType);
                             map.setPlayer(Player.getInstance(cell));
                             map.getPlayer().setCell(cell);
+                            cell.setActor(map.getPlayer());
                             break;
                         case 'k':
                             cell.setType(cellType);

@@ -5,9 +5,7 @@ import com.codecool.dungeoncrawl.logic.items.Inventory;
 import com.codecool.dungeoncrawl.logic.items.Item;
 
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 import java.sql.SQLOutput;
 import java.util.Arrays;
@@ -38,22 +36,20 @@ public class Player extends Actor {
 
     @Override
     public void move(int dx, int dy) {
-        List<String> stepOptions = new ArrayList<>(Arrays.asList("floor", "grass", "open door", "stairs"));
+        List<String> stepOptions = new ArrayList<>(Arrays.asList("floor", "grass", "open door"));
+        List<String> wallTypes = new ArrayList<>(Arrays.asList("wall", "wall fence"));
         if (isAlive) {
             Cell nextCell = cell.getNeighbor(dx, dy);
-
             if (stepOptions.contains(nextCell.getTileName()) && nextCell.getActor() == null) {
-              
                 manageMovementVisually(nextCell);
-
             } else if (nextCell.getActor() != null) {
                 attackMonster(nextCell.getActor(), nextCell);
             } else if (nextCell.getTileName().equals("fence")) {
-                health --;
+                health--;
                 if (this.health <= 0) {
                     manageFuneral();
                 }
-            } else if (nextCell.getTileName().equals("wall")) {
+            } else if (wallTypes.contains(nextCell.getTileName()) && name != null) {
                 for (Developer developer : Developer.values()) {
                     if (name.equals(developer.getDeveloperName())) {
                         manageMovementVisually(nextCell);
