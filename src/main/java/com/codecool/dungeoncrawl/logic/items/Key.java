@@ -12,5 +12,6 @@ public class Key extends Item {
     }
 
     public void startAction(Player player) {
+        player.getCell().getGameMap().openDoor();
     }
 }
