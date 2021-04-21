@@ -75,6 +75,10 @@ public class Player extends Actor {
         return vision;
     }
 
+    public void setVision(int vision) {
+        this.vision = vision;
+    }
+
     public void pickUpItem() {
         Item pickedItem = cell.getItem();
         if (pickedItem != null) {
