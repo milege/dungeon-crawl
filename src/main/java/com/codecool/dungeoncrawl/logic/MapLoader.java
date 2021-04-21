@@ -85,15 +85,6 @@ public class MapLoader {
                         case 'w':
                             cell.setType(CellType.WATER);
                             break;
-                        case ',':
-                            cell.setType(CellType.GRASS);
-                            break;
-                        case '|':
-                            cell.setType(CellType.WALLFENCE);
-                            break;
-                        case 'w':
-                            cell.setType(CellType.WATER);
-                            break;
                         case 'q':
                             cell.setType(CellType.DIRT);
                             break;
