@@ -2,20 +2,20 @@ package com.codecool.dungeoncrawl.logic.items;
 
 import com.codecool.dungeoncrawl.logic.actors.Player;
 
-public class Shield extends Item {
+public abstract class Shield extends Item {
 
-    private final int additionalDefenseStrength = 2;
+    private int additionalDefenseStrength = 0;
 
-    public Shield() {
+    public Shield(String name, ItemType type) {
         super("Shield", ItemType.SHIELD);
     }
 
-    public String getTileName() {
-        return "shield";
+    public int getAdditionalDefenseStrength() {
+        return additionalDefenseStrength;
     }
 
-    public int getAdditionalAttackStrength() {
-        return additionalDefenseStrength;
+    public void setAdditionalDefenseStrength(int additionalDefenseStrength) {
+        this.additionalDefenseStrength = additionalDefenseStrength;
     }
 
     public void startAction(Player player) {
