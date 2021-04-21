@@ -24,7 +24,7 @@ public class Player extends Actor {
         List<String> stepOptions = new ArrayList<>(Arrays.asList("floor", "grass", "open door"));
         if (isAlive) {
             Cell nextCell = cell.getNeighbor(dx, dy);
-            if ((nextCell.getTileName().equals("floor") && nextCell.getActor() == null) || nextCell.getTileName().equals("open door")) {
+            if (stepOptions.contains(nextCell.getTileName()) && nextCell.getActor() == null) {
                 cell.setActor(null);
                 nextCell.setActor(this);
                 cell = nextCell;
