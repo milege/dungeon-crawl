@@ -19,7 +19,8 @@ import javafx.stage.Stage;
 
 
 public class Main extends Application {
-    GameMap map = MapLoader.loadMap();
+    GameMap map = MapLoader.loadMap("/map.txt");
+    GameMap firstMap;
     Canvas canvas = new Canvas(
             map.getWidth() * Tiles.TILE_WIDTH,
             map.getHeight() * Tiles.TILE_WIDTH);
@@ -117,4 +118,9 @@ public class Main extends Application {
         inventoryLabel.setText(map.getPlayer().getInventory().toString());
     }
 
+    private void loadNewMap() {
+        firstMap = map;
+        map = MapLoader.loadMap("/map2.txt");
+        refresh();
+    }
 }
