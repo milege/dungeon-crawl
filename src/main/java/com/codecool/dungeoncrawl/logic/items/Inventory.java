@@ -25,7 +25,7 @@ public class Inventory {
 
     public boolean isInInventory(String itemName){
         for (Item item : items){
-            if (item.getName().equals(itemName)){
+            if (item.getName().equalsIgnoreCase(itemName)){
                 return true;
             }
         }

@@ -49,6 +49,9 @@ public class Main extends Application {
 
         itemPickUpButton.setOnAction(onClick -> {
             map.getPlayer().pickUpItem();
+            if (map.getPlayer().getInventory().isInInventory("key")) {
+                map.openDoor();
+            }
             ui.requestFocus();
             refresh();
         });

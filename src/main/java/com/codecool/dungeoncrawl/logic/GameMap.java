@@ -14,6 +14,8 @@ public class GameMap {
 
     private Player player;
 
+    private Cell door;
+
     private List<Actor> monsters = new ArrayList<>();
 
     public GameMap(int width, int height, CellType defaultCellType) {
@@ -34,6 +36,8 @@ public class GameMap {
     public void setPlayer(Player player) {
         this.player = player;
     }
+
+    public void setDoor(Cell doorCell) { this.door = doorCell; }
 
     public void addMonster(Actor monster) {
         monsters.add(monster);
@@ -61,5 +65,9 @@ public class GameMap {
 
     public int getHeight() {
         return height;
+    }
+
+    public void openDoor() {
+        door.setType(CellType.OPEN_DOOR);
     }
 }

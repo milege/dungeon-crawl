@@ -20,7 +20,7 @@ public class Player extends Actor {
     public void move(int dx, int dy) {
         Cell nextCell = cell.getNeighbor(dx, dy);
 
-        if((nextCell.getTileName().equals("floor") && nextCell.getActor() == null) || (nextCell.getTileName().equals("door") && inventory.isInInventory("key"))) {
+        if((nextCell.getTileName().equals("floor") && nextCell.getActor() == null) || nextCell.getTileName().equals("open door")) {
             cell.setActor(null);
             nextCell.setActor(this);
             cell = nextCell;
