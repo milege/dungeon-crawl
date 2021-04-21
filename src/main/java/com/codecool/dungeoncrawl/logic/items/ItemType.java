@@ -4,7 +4,8 @@ public enum ItemType {
     KEY("key"),
     WEAPON("weapon"),
     ARMOR("armor"),
-    SHIELD("shield");
+    SHIELD("shield"),
+    HEALTH("health");
 
     private final String itemType;
 

@@ -13,20 +13,26 @@ public class Player extends Actor {
     public Player(Cell cell) {
         super(cell);
         this.setAttackStrength(5);
+        this.setDefenseStrength(0);
         this.setHealth(50);
     }
 
     @Override
     public void move(int dx, int dy) {
-        Cell nextCell = cell.getNeighbor(dx, dy);
-
-        if((nextCell.getTileName().equals("floor") && nextCell.getActor() == null) || nextCell.getTileName().equals("open door")) {
-            cell.setActor(null);
-            nextCell.setActor(this);
-            cell = nextCell;
-        } else if (nextCell.getActor() != null) {
-//            nextCell.setMonsterHealthLabel("" + cell.getNeighbor(dx, dy));
-            attackMonster(nextCell.getActor(), nextCell);
+        if (isAlive) {
+            Cell nextCell = cell.getNeighbor(dx, dy);
+            if ((nextCell.getTileName().equals("floor") && nextCell.getActor() == null) || nextCell.getTileName().equals("open door")) {
+                cell.setActor(null);
+                nextCell.setActor(this);
+                cell = nextCell;
+            } else if (nextCell.getActor() != null) {
+                attackMonster(nextCell.getActor(), nextCell);
+            } else if (nextCell.getTileName().equals("fence")) {
+                health --;
+                if (this.health <= 0) {
+                    manageFuneral();
+                }
+            }
         }
     }
 
@@ -34,7 +40,9 @@ public class Player extends Actor {
         this.isInBattle = true;
         monster.setInBattle(true);
         while (this.isAlive && monster.isAlive()) {
-            monster.setHealth(monster.getHealth() - this.attackStrength);
+            if (monster.getDefenseStrength() < this.attackStrength) {
+                monster.setHealth(monster.getHealth() + monster.getDefenseStrength() - this.attackStrength);
+            }
             if (monster.getHealth() <= 0) {
                 monster.setAlive(false);
                 cell.setActor(null);
@@ -42,12 +50,13 @@ public class Player extends Actor {
                 this.isInBattle = false;
                 cell = nextCell;
             } else {
-                this.health = this.health - monster.getAttackStrength();
+                if (this.defenseStrength < monster.getAttackStrength()) {
+                    this.health = this.health + this.defenseStrength - monster.getAttackStrength();
+                }
             }
             if (this.health <= 0) {
-                this.isAlive = false;
+                manageFuneral();
                 monster.isInBattle = false;
-                cell.setActor(null);
             }
         }
     }
@@ -67,5 +76,11 @@ public class Player extends Actor {
             inventory.addToInventory(pickedItem);
             pickedItem.startAction(this);
         }
+    }
+
+    private void manageFuneral() {
+        isAlive = false;
+        cell.setActor(new Corpse(cell));
+        System.out.println("Game over! Rest in peace!");
     }
 }
