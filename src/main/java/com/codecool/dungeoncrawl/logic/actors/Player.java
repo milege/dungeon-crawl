@@ -37,6 +37,7 @@ public class Player extends Actor {
     @Override
     public void move(int dx, int dy) {
         List<String> stepOptions = new ArrayList<>(Arrays.asList("floor", "grass", "open door"));
+        List<String> wallTypes = new ArrayList<>(Arrays.asList("wall", "wall fence"));
         if (isAlive) {
             Cell nextCell = cell.getNeighbor(dx, dy);
 
@@ -49,7 +50,7 @@ public class Player extends Actor {
                 if (this.health <= 0) {
                     manageFuneral();
                 }
-            } else if (nextCell.getTileName().equals("wall") && name != null) {
+            } else if (wallTypes.contains(nextCell.getTileName()) && name != null) {
                 for (Developer developer : Developer.values()) {
                     if (name.equals(developer.getDeveloperName())) {
                         manageMovementVisually(nextCell);
