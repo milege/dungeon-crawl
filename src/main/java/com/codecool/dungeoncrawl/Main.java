@@ -99,15 +99,27 @@ public class Main extends Application {
     private void refresh() {
         context.setFill(Color.BLACK);
         context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        for (int x = 0; x < map.getWidth(); x++) {
-            for (int y = 0; y < map.getHeight(); y++) {
-                Cell cell = map.getCell(x, y);
-                if (cell.getActor() != null) {
-                    Tiles.drawTile(context, cell.getActor(), x, y);
-                } else if (cell.getItem() != null) {
-                    Tiles.drawTile(context, cell.getItem(), x, y);
-                } else {
-                    Tiles.drawTile(context, cell, x, y);
+
+        int playerCellX = map.getPlayer().getCell().getX();
+        int playerCellY = map.getPlayer().getCell().getY();
+        int mapCenterX = map.getWidth() / 2;
+        int mapCenterY = map.getHeight() / 2;
+        int visionRadius = map.getPlayer().getVision();
+
+        for (int x = -visionRadius ; x <= visionRadius; x++) {
+            for (int y = -visionRadius; y <= visionRadius; y++) {
+                try {
+                    Cell cell = map.getCell(playerCellX + x, playerCellY + y);
+                    if (cell.getActor() != null) {
+                        Tiles.drawTile(context, cell.getActor(), mapCenterX + x, mapCenterY + y);
+                    } else if (cell.getItem() != null) {
+                        Tiles.drawTile(context, cell.getItem(), mapCenterX + x, mapCenterY + y);
+                    } else {
+                        Tiles.drawTile(context, cell, mapCenterX + x, mapCenterY + y);
+                    }
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    Cell emptyCell = map.getCell(0, 10);
+                    Tiles.drawTile(context, emptyCell, mapCenterX + x, mapCenterY + y);
                 }
             }
         }

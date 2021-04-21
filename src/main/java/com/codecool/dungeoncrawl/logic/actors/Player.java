@@ -9,12 +9,14 @@ import java.sql.SQLOutput;
 public class Player extends Actor {
 
     private final Inventory inventory = new Inventory();
+    private int vision;
 
     public Player(Cell cell) {
         super(cell);
         this.setAttackStrength(5);
         this.setDefenseStrength(0);
         this.setHealth(50);
+        this.vision = 5;
     }
 
     @Override
@@ -67,6 +69,10 @@ public class Player extends Actor {
 
     public String getTileName() {
         return "player";
+    }
+
+    public int getVision(){
+        return vision;
     }
 
     public void pickUpItem() {
