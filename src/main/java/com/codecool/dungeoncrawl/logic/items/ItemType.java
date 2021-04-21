@@ -3,7 +3,7 @@ package com.codecool.dungeoncrawl.logic.items;
 public enum ItemType {
     KEY("key"),
     WEAPON("weapon"),
-    ARMOR("armor"),
+    VISION("vision"),
     SHIELD("shield"),
     HEALTH("health");
 

@@ -4,19 +4,28 @@ import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.items.Inventory;
 import com.codecool.dungeoncrawl.logic.items.Item;
 
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import java.sql.SQLOutput;
+import java.util.Arrays;
+
+
 public class Player extends Actor {
 
     private final Inventory inventory = new Inventory();
+    private int vision;
+
+    private String name;
 
     public Player(Cell cell) {
         super(cell);
         this.setAttackStrength(5);
         this.setDefenseStrength(0);
         this.setHealth(50);
+        this.vision = 5;
     }
 
     @Override
@@ -24,10 +33,11 @@ public class Player extends Actor {
         List<String> stepOptions = new ArrayList<>(Arrays.asList("floor", "grass", "open door"));
         if (isAlive) {
             Cell nextCell = cell.getNeighbor(dx, dy);
+
             if (stepOptions.contains(nextCell.getTileName()) && nextCell.getActor() == null) {
-                cell.setActor(null);
-                nextCell.setActor(this);
-                cell = nextCell;
+              
+                manageMovementVisually(nextCell);
+
             } else if (nextCell.getActor() != null) {
                 attackMonster(nextCell.getActor(), nextCell);
             } else if (nextCell.getTileName().equals("fence")) {
@@ -35,8 +45,20 @@ public class Player extends Actor {
                 if (this.health <= 0) {
                     manageFuneral();
                 }
+            } else if (nextCell.getTileName().equals("wall")) {
+                for (Developer developer : Developer.values()) {
+                    if (name.equals(developer.getDeveloperName())) {
+                        manageMovementVisually(nextCell);
+                    }
+                }
             }
         }
+    }
+
+    private void manageMovementVisually(Cell nextCell) {
+        cell.setActor(null);
+        nextCell.setActor(this);
+        cell = nextCell;
     }
 
     public void attackMonster(Actor monster, Cell nextCell) {
@@ -48,10 +70,8 @@ public class Player extends Actor {
             }
             if (monster.getHealth() <= 0) {
                 monster.setAlive(false);
-                cell.setActor(null);
-                nextCell.setActor(this);
+                manageMovementVisually(nextCell);
                 this.isInBattle = false;
-                cell = nextCell;
             } else {
                 if (this.defenseStrength < monster.getAttackStrength()) {
                     this.health = this.health + this.defenseStrength - monster.getAttackStrength();
@@ -70,6 +90,22 @@ public class Player extends Actor {
 
     public String getTileName() {
         return "player";
+    }
+  
+    public int getVision(){
+        return vision;
+    }
+
+    public void setVision(int vision) {
+        this.vision = vision;
+    }
+  
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public void pickUpItem() {
