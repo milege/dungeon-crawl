@@ -1,9 +1,6 @@
 package com.codecool.dungeoncrawl.logic;
 
-import com.codecool.dungeoncrawl.logic.actors.Faceless;
-import com.codecool.dungeoncrawl.logic.actors.Ghost;
-import com.codecool.dungeoncrawl.logic.actors.Player;
-import com.codecool.dungeoncrawl.logic.actors.Skeleton;
+import com.codecool.dungeoncrawl.logic.actors.*;
 import com.codecool.dungeoncrawl.logic.items.*;
 
 import java.io.InputStream;
@@ -41,6 +38,10 @@ public class MapLoader {
                             cell.setType(cellType);
                             map.addMonster(new Skeleton(cell));
                             break;
+                        case 'z':
+                            cell.setType(cellType);
+                            map.addMonster(new Zombie(cell));
+                            break;
                         case '@':
                             cell.setType(cellType);
                             map.setPlayer(Player.getInstance(cell));
@@ -55,21 +56,41 @@ public class MapLoader {
                             cell.setType(cellType);
                             cell.setItem(new Sword());
                             break;
+                        case 'H':
+                            cell.setType(cellType);
+                            cell.setItem(new WarHammer());
+                            break;
                         case 'D':
                             cell.setType(cellType);
-                            cell.setItem(new Shield());
+                            cell.setItem(new SmallShield());
+                            break;
+                        case 'm':
+                            cell.setType(cellType);
+                            cell.setItem(new MediumShield());
                             break;
                         case 'p':
                             cell.setType(cellType);
                             cell.setItem(new Potion());
                             break;
+                        case 'c':
+                            cell.setType(cellType);
+                            cell.setItem(new PotionCocktail());
+                            break;
                         case 'g':
                             cell.setType(cellType);
                             map.addMonster(new Ghost(cell));
                             break;
+                        case 'ö':
+                            cell.setType(cellType);
+                            map.addMonster(new Poltergeist(cell));
+                            break;
                         case 'f':
                             cell.setType(cellType);
                             map.addMonster(new Faceless(cell));
+                            break;
+                        case 'e':
+                            cell.setType(cellType);
+                            map.addMonster(new Devil(cell));
                             break;
                         case 'd':
                             cell.setType(CellType.DOOR);

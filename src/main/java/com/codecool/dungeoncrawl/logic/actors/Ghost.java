@@ -2,11 +2,7 @@ package com.codecool.dungeoncrawl.logic.actors;
 
 import com.codecool.dungeoncrawl.logic.Cell;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-public class Ghost extends Actor {
+public class Ghost extends DeadSpirit {
     public Ghost(Cell cell) {
         super(cell);
         this.setAttackStrength(3);
@@ -16,18 +12,5 @@ public class Ghost extends Actor {
 
     @Override
     public String getTileName() { return "ghost"; }
-
-    @Override
-    public void move(int dx, int dy) {
-        Cell nextCell = cell.getNeighbor(dx, dy);
-        List<String> stepOptions = new ArrayList<>(Arrays.asList("floor", "grass", "wall", "wall fence"));
-
-        if(!isInBattle && (stepOptions.contains(nextCell.getTileName())) &&
-                nextCell.getActor() == null){
-            cell.setActor(null);
-            nextCell.setActor(this);
-            cell = nextCell;
-        }
-    }
 
 }
