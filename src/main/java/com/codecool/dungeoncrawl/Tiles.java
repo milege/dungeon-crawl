@@ -38,7 +38,7 @@ public class Tiles {
         tileMap.put("door", new Tile(11,11));
         tileMap.put("open door", new Tile(12,11));
         tileMap.put("corpse", new Tile(1, 14));
-
+        tileMap.put("stairs", new Tile(3, 6));
         tileMap.put("grass", new Tile(6, 0));
         tileMap.put("wall fence", new Tile(2, 3));
         tileMap.put("water", new Tile(8, 5));

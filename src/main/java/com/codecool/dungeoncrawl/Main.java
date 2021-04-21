@@ -113,7 +113,7 @@ public class Main extends Application {
                 refresh();
                 break;
         }
-        if (map.getPlayer().getCell().getTileName().equals("open door")) loadNewMap();
+        if (map.getPlayer().getCell().getTileName().equals("stairs")) loadNewMap();
     }
 
     private void refresh() {
