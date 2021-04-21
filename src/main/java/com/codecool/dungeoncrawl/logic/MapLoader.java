@@ -74,7 +74,6 @@ public class MapLoader {
                             cell.setType(CellType.DOOR);
                             map.setDoor(cell);
                             break;
-
                         case ',':
                             cell.setType(CellType.GRASS);
                             break;
@@ -87,11 +86,12 @@ public class MapLoader {
                         case 'q':
                             cell.setType(CellType.DIRT);
                             break;
-
                         case 't':
                             cell.setType(CellType.FLOOR);
                             cell.setItem(new Torch());
-
+                            break;
+                        case '+':
+                            cell.setType(CellType.STAIRS);
                             break;
                         default:
                             throw new RuntimeException("Unrecognized character: '" + line.charAt(x) + "'");
