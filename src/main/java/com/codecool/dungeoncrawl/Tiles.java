@@ -41,6 +41,7 @@ public class Tiles {
         tileMap.put("grass", new Tile(6, 0));
         tileMap.put("wall fence", new Tile(2, 3));
         tileMap.put("water", new Tile(8, 5));
+        tileMap.put("dirt", new Tile(1, 0));
        /* tileMap.put("water corner", new Tile(2, 3));
         tileMap.put("canal", new Tile(2, 3));*/
     }
