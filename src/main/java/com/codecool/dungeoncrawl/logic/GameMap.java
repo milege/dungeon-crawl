@@ -12,6 +12,7 @@ public class GameMap {
     private final int height;
     private Cell[][] cells;
 
+
     private Player player;
 
     private Cell door;
@@ -64,5 +65,9 @@ public class GameMap {
 
     public void openDoor() {
         door.setType(CellType.OPEN_DOOR);
+    }
+
+    public Cell[][] getCells() {
+        return cells;
     }
 }
