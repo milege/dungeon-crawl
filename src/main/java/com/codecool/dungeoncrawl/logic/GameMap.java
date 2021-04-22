@@ -10,14 +10,14 @@ import java.util.Random;
 public class GameMap {
     private final int width;
     private final int height;
-    private Cell[][] cells;
+    private final Cell[][] cells;
 
 
     private Player player;
 
     private Cell door;
 
-    private List<Actor> monsters = new ArrayList<>();
+    private final List<Actor> monsters = new ArrayList<>();
 
     public GameMap(int width, int height, CellType defaultCellType) {
         this.width = width;
