@@ -69,8 +69,15 @@ public class Main extends Application {
         itemPickUpButton.setOnAction(onClick -> {
             map.getPlayer().pickUpItem();
             if (map.getPlayer().getInventory().isInInventory("Potion")){
-                enablePotionButton();
+                drinkPotionButton.setDisable(false);
             }
+            ui.requestFocus();
+            refresh();
+        });
+
+        drinkPotionButton.setOnAction(onClick -> {
+            map.getPlayer().getInventory().removeItem("Potion");
+            drinkPotionButton.setDisable(true);
             ui.requestFocus();
             refresh();
         });
@@ -160,9 +167,5 @@ public class Main extends Application {
         firstMap = map;
         map = MapLoader.loadMap("/map2.txt", CellType.GRASS);
         refresh();
-    }
-
-    private void enablePotionButton(){
-
     }
 }
