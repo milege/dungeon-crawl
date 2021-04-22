@@ -7,7 +7,7 @@ import java.io.InputStream;
 import java.util.Scanner;
 
 public class MapLoader {
-    public static GameMap loadMap(String mapName, CellType cellType) {
+    public static GameMap loadMap(String mapName, CellType defaultFloorCellType) {
         InputStream is = MapLoader.class.getResourceAsStream(mapName);
         Scanner scanner = new Scanner(is);
         int width = scanner.nextInt();
@@ -35,61 +35,61 @@ public class MapLoader {
                             cell.setType(CellType.FLOOR);
                             break;
                         case 's':
-                            cell.setType(cellType);
+                            cell.setType(defaultFloorCellType);
                             map.addMonster(new Skeleton(cell));
                             break;
                         case 'z':
-                            cell.setType(cellType);
+                            cell.setType(defaultFloorCellType);
                             map.addMonster(new Zombie(cell));
                             break;
                         case '@':
-                            cell.setType(cellType);
+                            cell.setType(defaultFloorCellType);
                             map.setPlayer(Player.getInstance(cell));
                             map.getPlayer().setCell(cell);
                             cell.setActor(map.getPlayer());
                             break;
                         case 'k':
-                            cell.setType(cellType);
+                            cell.setType(defaultFloorCellType);
                             cell.setItem(new Key());
                             break;
                         case 'S':
-                            cell.setType(cellType);
+                            cell.setType(defaultFloorCellType);
                             cell.setItem(new Sword());
                             break;
                         case 'H':
-                            cell.setType(cellType);
+                            cell.setType(defaultFloorCellType);
                             cell.setItem(new WarHammer());
                             break;
                         case 'D':
-                            cell.setType(cellType);
+                            cell.setType(defaultFloorCellType);
                             cell.setItem(new SmallShield());
                             break;
                         case 'm':
-                            cell.setType(cellType);
+                            cell.setType(defaultFloorCellType);
                             cell.setItem(new MediumShield());
                             break;
                         case 'p':
-                            cell.setType(cellType);
+                            cell.setType(defaultFloorCellType);
                             cell.setItem(new Potion());
                             break;
                         case 'c':
-                            cell.setType(cellType);
+                            cell.setType(defaultFloorCellType);
                             cell.setItem(new PotionCocktail());
                             break;
                         case 'g':
-                            cell.setType(cellType);
+                            cell.setType(defaultFloorCellType);
                             map.addMonster(new Ghost(cell));
                             break;
                         case 'ö':
-                            cell.setType(cellType);
+                            cell.setType(defaultFloorCellType);
                             map.addMonster(new Poltergeist(cell));
                             break;
                         case 'f':
-                            cell.setType(cellType);
+                            cell.setType(defaultFloorCellType);
                             map.addMonster(new Faceless(cell));
                             break;
                         case 'e':
-                            cell.setType(cellType);
+                            cell.setType(defaultFloorCellType);
                             map.addMonster(new Devil(cell));
                             break;
                         case 'd':
