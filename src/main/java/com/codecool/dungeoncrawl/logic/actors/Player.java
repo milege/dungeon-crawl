@@ -50,7 +50,7 @@ public class Player extends Actor {
                 if (this.health <= 0) {
                     manageFuneral();
                 }
-            } else if (wallTypes.contains(nextCell.getTileName()) && name != null) {
+            } else if (!nextCell.getTileName().equals("empty") && name != null) {
                 for (Developer developer : Developer.values()) {
                     if (name.equals(developer.getDeveloperName())) {
                         manageMovementVisually(nextCell);
