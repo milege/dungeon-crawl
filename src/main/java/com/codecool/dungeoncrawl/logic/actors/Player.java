@@ -3,6 +3,7 @@ package com.codecool.dungeoncrawl.logic.actors;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.items.Inventory;
 import com.codecool.dungeoncrawl.logic.items.Item;
+import com.codecool.dungeoncrawl.logic.items.ItemType;
 
 
 import java.util.*;
@@ -117,7 +118,9 @@ public class Player extends Actor {
         if (pickedItem != null) {
             cell.setItem(null);
             inventory.addToInventory(pickedItem);
-            pickedItem.startAction(this);
+            if (!pickedItem.getType().equals(ItemType.HEALTH.getTypeName())) {
+                pickedItem.startAction(this);
+            }
         }
     }
 

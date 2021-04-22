@@ -7,7 +7,7 @@ public abstract class Shield extends Item {
     private int additionalDefenseStrength = 0;
 
     public Shield(String name, ItemType type) {
-        super("Shield", ItemType.SHIELD);
+        super(name, type);
     }
 
     public int getAdditionalDefenseStrength() {

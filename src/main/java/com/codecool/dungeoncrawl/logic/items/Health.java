@@ -6,7 +6,7 @@ public abstract class Health extends Item {
 
     private int additionalHealth = 0;
     public Health(String name, ItemType type) {
-        super("Health", ItemType.HEALTH);
+        super(name, type);
     }
 
     public int getAdditionalHealth() {
