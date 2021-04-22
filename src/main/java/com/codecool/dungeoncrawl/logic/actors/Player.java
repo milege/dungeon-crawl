@@ -38,7 +38,6 @@ public class Player extends Actor {
     @Override
     public void move(int dx, int dy) {
         List<String> stepOptions = new ArrayList<>(Arrays.asList("floor", "grass", "open door", "stairs"));
-        List<String> wallTypes = new ArrayList<>(Arrays.asList("wall", "wall fence"));
         if (isAlive) {
             Cell nextCell = cell.getNeighbor(dx, dy);
             if (stepOptions.contains(nextCell.getTileName()) && nextCell.getActor() == null) {
