@@ -7,7 +7,7 @@ public abstract class Weapon extends Item {
     private int additionalAttackStrength;
 
     public Weapon(String name, ItemType type) {
-        super("Weapon", ItemType.WEAPON);
+        super(name, type);
     }
 
     public int getAdditionalAttackStrength() {
