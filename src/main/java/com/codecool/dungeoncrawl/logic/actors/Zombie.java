@@ -8,6 +8,7 @@ import java.util.List;
 
 public class Zombie extends DeadCorpse {
     private final List<String> stepOptions = new ArrayList<>(Arrays.asList("floor", "dirt", "grass"));
+    private boolean zombiesTurn = true;
 
     public Zombie(Cell cell) {
         super(cell);
@@ -24,11 +25,12 @@ public class Zombie extends DeadCorpse {
     @Override
     public void move(int dx, int dy) {
         Cell nextCell = cell.getNeighbor(dx, dy);
-        if (!isInBattle && nextCell.getActor() == null) {
-            cell.setActor(null);
-            nextCell.setActor(this);
-            cell = nextCell;
+        if (zombiesTurn && !isInBattle && nextCell.getActor() == null) {
+                cell.setActor(null);
+                nextCell.setActor(this);
+                cell = nextCell;
         }
+        zombiesTurn = !zombiesTurn;
     }
 
     @Override
