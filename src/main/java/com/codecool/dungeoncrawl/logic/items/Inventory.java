@@ -40,4 +40,13 @@ public class Inventory {
             }
         }
     }
+
+    public Item getItem(String itemName) {
+        for (Item item : items){
+            if (item.getName().equalsIgnoreCase(itemName)){
+                return item;
+            }
+        }
+        return null;
+    }
 }

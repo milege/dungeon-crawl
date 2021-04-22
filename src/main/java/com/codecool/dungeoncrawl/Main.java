@@ -76,6 +76,7 @@ public class Main extends Application {
         });
 
         drinkPotionButton.setOnAction(onClick -> {
+            map.getPlayer().getInventory().getItem("Potion").startAction(map.getPlayer());
             map.getPlayer().getInventory().removeItem("Potion");
             drinkPotionButton.setDisable(true);
             ui.requestFocus();
