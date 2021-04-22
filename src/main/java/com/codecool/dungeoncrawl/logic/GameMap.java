@@ -8,9 +8,10 @@ import java.util.List;
 import java.util.Random;
 
 public class GameMap {
-    private int width;
-    private int height;
+    private final int width;
+    private final int height;
     private Cell[][] cells;
+
 
     private Player player;
 
@@ -45,13 +46,8 @@ public class GameMap {
 
     public void moveMonsters() {
         for (Actor monster : monsters) {
-            int[][] directions = new int[][]{{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
-            Random random = new Random();
-            int[] direction;
-            do {
-                direction = directions[random.nextInt(directions.length)];
-            } while (monster.getX()+direction[0] < 0 || monster.getX()+direction[0] >= width || monster.getY()+direction[1] < 0 || monster.getY()+direction[1] >= height) ;
-            monster.move(direction[0], direction[1]);
+            int[] coordinates = monster.getNewDirection(width, height, this.getPlayer());
+            monster.move(coordinates[0], coordinates[1]);
         }
     }
 
@@ -69,5 +65,9 @@ public class GameMap {
 
     public void openDoor() {
         door.setType(CellType.OPEN_DOOR);
+    }
+
+    public Cell[][] getCells() {
+        return cells;
     }
 }

@@ -5,6 +5,8 @@ import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.Drawable;
 import com.codecool.dungeoncrawl.logic.items.Inventory;
 
+import java.util.Random;
+
 public abstract class Actor implements Drawable {
     protected Cell cell;
     protected int health;
@@ -12,6 +14,7 @@ public abstract class Actor implements Drawable {
     protected int defenseStrength;
     protected boolean isAlive = true;
     protected boolean isInBattle = false;
+    protected int[][] directions = new int[][]{{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
 
     public Actor(Cell cell) {
         this.cell = cell;
@@ -74,5 +77,14 @@ public abstract class Actor implements Drawable {
 
     public void setInBattle(boolean inBattle) {
         isInBattle = inBattle;
+    }
+
+    public int[] getNewDirection(int width, int height, Player player) {
+        Random random = new Random();
+        int[] direction;
+        do {
+            direction = directions[random.nextInt(directions.length)];
+        } while (this.getX()+direction[0] < 0 || this.getX()+direction[0] >= width || this.getY()+direction[1] < 0 || this.getY()+direction[1] >= height);
+        return direction;
     }
 }
