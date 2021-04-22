@@ -3,7 +3,7 @@ package com.codecool.dungeoncrawl.logic.items;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 
 public class Torch extends Item {
-    private final int extraVision = 3;
+    private final int extraVision = 6;
 
     public Torch() {
         super("Torch", ItemType.VISION);
