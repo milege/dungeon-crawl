@@ -1,9 +1,7 @@
 package com.codecool.dungeoncrawl.logic.actors;
 
-import com.codecool.dungeoncrawl.Main;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.Drawable;
-import com.codecool.dungeoncrawl.logic.items.Inventory;
 
 import java.util.Random;
 
@@ -70,10 +68,6 @@ public abstract class Actor implements Drawable {
     public void setCell(Cell cell) {
             this.cell = cell;
         }
-
-    public boolean isInBattle() {
-        return isInBattle;
-    }
 
     public void setInBattle(boolean inBattle) {
         isInBattle = inBattle;
