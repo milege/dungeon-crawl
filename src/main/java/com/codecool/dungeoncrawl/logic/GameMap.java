@@ -45,13 +45,8 @@ public class GameMap {
 
     public void moveMonsters() {
         for (Actor monster : monsters) {
-            int[][] directions = new int[][]{{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
-            Random random = new Random();
-            int[] direction;
-            do {
-                direction = directions[random.nextInt(directions.length)];
-            } while (monster.getX()+direction[0] < 0 || monster.getX()+direction[0] >= width || monster.getY()+direction[1] < 0 || monster.getY()+direction[1] >= height) ;
-            monster.move(direction[0], direction[1]);
+            int[] coordinates = monster.getNewDirection(width, height, this.getPlayer());
+            monster.move(coordinates[0], coordinates[1]);
         }
     }
 
