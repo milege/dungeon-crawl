@@ -13,6 +13,7 @@ public enum CellType {
     DIRT("dirt"),
     TREES("trees"),
     STAIRS("stairs"),
+    BOSSFLOOR("boss floor"),
     DOWNSTAIRS("downstairs");
  /*   WATERCORNER("water corner"),
     WATERRIGHT("water right"),

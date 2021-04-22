@@ -52,6 +52,7 @@ public class Tiles {
         tileMap.put("dirt", new Tile(1, 0));
         tileMap.put("downstairs", new Tile(2, 6));
         tileMap.put("torch", new Tile(4, 15));
+        tileMap.put("boss floor", new Tile(6, 13));
 
     }
 

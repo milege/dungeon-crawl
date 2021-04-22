@@ -121,6 +121,9 @@ public class MapLoader {
                         case '-':
                             cell.setType(CellType.DOWNSTAIRS);
                             break;
+                        case 'b':
+                            cell.setType(CellType.BOSSFLOOR);
+                            break;
                         default:
                             throw new RuntimeException("Unrecognized character: '" + line.charAt(x) + "'");
                     }
