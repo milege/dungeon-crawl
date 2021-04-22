@@ -35,6 +35,7 @@ public class Main extends Application {
     Label defenseLabel = new Label();
     Label inventoryLabel = new Label();
     Button itemPickUpButton = new Button("Pick up item");
+    Button drinkPotionButton = new Button("Drink Potion");
     Button nameSubmitButton = new Button("Submit");
 
     public static void main(String[] args) {
@@ -61,10 +62,15 @@ public class Main extends Application {
         ui.add(defenseLabel, 1, 6);
         ui.add(inventoryLabel, 0, 7);
         ui.add(itemPickUpButton,0,8);
+        ui.add(drinkPotionButton,0,9);
 
+        drinkPotionButton.setDisable(true);
 
         itemPickUpButton.setOnAction(onClick -> {
             map.getPlayer().pickUpItem();
+            if (map.getPlayer().getInventory().isInInventory("Potion")){
+                enablePotionButton();
+            }
             ui.requestFocus();
             refresh();
         });
@@ -154,5 +160,9 @@ public class Main extends Application {
         firstMap = map;
         map = MapLoader.loadMap("/map2.txt", CellType.GRASS);
         refresh();
+    }
+
+    private void enablePotionButton(){
+
     }
 }
