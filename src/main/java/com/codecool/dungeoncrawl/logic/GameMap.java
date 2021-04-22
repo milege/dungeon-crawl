@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.Random;
 
 public class GameMap {
-    private int width;
-    private int height;
+    private final int width;
+    private final int height;
     private Cell[][] cells;
 
     private Player player;
