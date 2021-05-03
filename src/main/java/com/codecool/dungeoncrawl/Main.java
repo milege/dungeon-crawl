@@ -1,5 +1,6 @@
 package com.codecool.dungeoncrawl;
 
+import com.codecool.dungeoncrawl.dao.GameDatabaseManager;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.GameMap;
@@ -22,6 +23,7 @@ import javafx.scene.image.Image;
 
 
 public class Main extends Application {
+    GameDatabaseManager gameDatabaseManager = new GameDatabaseManager();
     GameMap map = MapLoader.loadMap("/map.txt", CellType.FLOOR);
     GameMap firstMap;
     Canvas canvas = new Canvas(
@@ -45,6 +47,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        gameDatabaseManager.setup();
         nameField.setPrefWidth(8);
         GridPane ui = new GridPane();
         ui.setPrefWidth(300);
