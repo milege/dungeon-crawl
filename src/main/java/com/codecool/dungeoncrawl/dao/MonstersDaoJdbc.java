@@ -16,7 +16,7 @@ public class MonstersDaoJdbc implements MonstersDao {
     @Override
     public void add(MonstersModel monsters) {
         try (Connection conn = dataSource.getConnection()) {
-            for (MonstersModel.MonsterData monster : monsters.getMonsters()) {
+            for (MonstersModel.MonsterPosition monster : monsters.getMonsters()) {
                 String sql = "INSERT INTO monsters (monster_name, x, y, game_id) VALUES (?, ?, ?, ?)";
                 PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
                 statement.setString(1, monster.getName());

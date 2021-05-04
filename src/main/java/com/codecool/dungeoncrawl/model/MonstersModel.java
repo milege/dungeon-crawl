@@ -8,12 +8,12 @@ import java.util.List;
 
 public class MonstersModel {
 
-    public class MonsterData{
+    public class MonsterPosition {
         private final String name;
         private final int x;
         private final int y;
 
-        public MonsterData(String name, int x, int y) {
+        public MonsterPosition(String name, int x, int y) {
             this.name = name;
             this.x = x;
             this.y = y;
@@ -32,7 +32,7 @@ public class MonstersModel {
         }
     }
 
-    private final List<MonsterData> monsters = new ArrayList<MonsterData>();
+    private final List<MonsterPosition> monsters = new ArrayList<>();
 
     public MonstersModel(GameMap map) {
         Cell[][] cells = map.getCells();
@@ -42,13 +42,13 @@ public class MonstersModel {
                     String name = cells[i][j].getActor().getTileName();
                     int x = cells[i][j].getActor().getX();
                     int y = cells[i][j].getActor().getY();
-                    monsters.add(new MonsterData(name, x, y));
+                    monsters.add(new MonsterPosition(name, x, y));
                 }
             }
         }
     }
 
-    public List<MonsterData> getMonsters() {
+    public List<MonsterPosition> getMonsters() {
         return monsters;
     }
 }
