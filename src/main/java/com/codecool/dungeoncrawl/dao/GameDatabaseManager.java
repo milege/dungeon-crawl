@@ -48,6 +48,18 @@ public class GameDatabaseManager {
         itemsDao.add(itemsModel);
     }
 
+    public void updatePlayer(PlayerModel player) {
+        playerDao.update(player);
+    }
+
+    public void getPlayer(Player player) {
+//        playerDao.get(player.getId());
+    }
+
+    public void getAll() {
+        playerDao.getAll();
+    }
+
     private DataSource connect() throws SQLException {
         PGSimpleDataSource dataSource = new PGSimpleDataSource();
         String dbName = System.getenv("PSQL_DB_NAME");
