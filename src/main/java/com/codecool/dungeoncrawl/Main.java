@@ -51,7 +51,7 @@ public class Main extends Application {
     Button nameSubmitButton = new Button("Submit");
     Button saveGameButton = new Button("Save Game");
     Button modalButton = new Button("Load Game");
-    Button loadGameButton = new Button("Load this Gamesave");
+    Label loadGameInfoLabel = new Label("Click a number to load gamesave!");
     Image logo = new Image("/logo.png", 180, 100, true, false);
 
     public static void main(String[] args) {
@@ -129,36 +129,16 @@ public class Main extends Application {
             modalUi.setPadding(new Insets(10));
             modalUi.setVgap(5);
             modalUi.setStyle("-fx-background-color:#ad9d94; -fx-font-size: 16");
-            modalUi.add(new ImageView(logo), 0, 0);
+            modalUi.add(loadGameInfoLabel, 0, 0);
+            loadGameInfoLabel.setStyle("-fx-font-weight: bold");
             StringBuilder text = new StringBuilder();
             int i = 1;
-            for (PlayerModel model : gameDatabaseManager.getAll())
-            {
-                text.append("  (Player name: ")
-                        .append(model.getPlayerName().toString())
-                        .append(", ")
-                        .append("Health: ")
-                        .append(String.valueOf(model.getHp()) + ")")
-                        .append("\n");
-                modalUi.add(new Label(text.toString()), 1, i);
-                text = new StringBuilder();
-                i++;
-            };
+            i = listSavedGames(modalUi, text, i);
             VBox vboxForButtons = new VBox();
-            for (int j = 1; j < i; j++){
-                Button btnNumber = new Button();
-                btnNumber.setPrefWidth(220);
-                btnNumber.setText("Load Gamesave " + String.valueOf(j));
-                btnNumber.setOnAction((ActionEvent)->{
-                    System.out.println(btnNumber.getText());
-                });
-                vboxForButtons.getChildren().add(btnNumber);
-                modalUi.add(vboxForButtons, 0,j);
-                vboxForButtons = new VBox();
-            }
+            placeLoadButtons(modalUi, i, vboxForButtons);
             Scene scene = new Scene(modalUi);
             Stage stage = new Stage();
-            stage.setTitle("SELECT A GAMESAVE TO LOAD");
+            stage.setTitle("LOAD GAME");
             stage.setScene(scene);
             stage.initModality(Modality.NONE);
             stage.initStyle(StageStyle.UTILITY);
@@ -180,6 +160,35 @@ public class Main extends Application {
         primaryStage.setTitle("Dungeon Crawl");
         primaryStage.show();
         ui.requestFocus();
+    }
+
+    private void placeLoadButtons(GridPane modalUi, int i, VBox vboxForButtons) {
+        for (int j = 1; j < i; j++){
+            Button btnNumber = new Button();
+            btnNumber.setPrefWidth(220);
+            btnNumber.setText(String.valueOf(j));
+            btnNumber.setOnAction((ActionEvent)->{
+                System.out.println(gameDatabaseManager.getAll().get(Integer.parseInt(btnNumber.getText()) - 1));
+            });
+            vboxForButtons.getChildren().add(btnNumber);
+            modalUi.add(vboxForButtons, 0,j);
+            vboxForButtons = new VBox();
+        }
+    }
+
+    private int listSavedGames(GridPane modalUi, StringBuilder text, int i) {
+        for (PlayerModel model : gameDatabaseManager.getAll())
+        {
+            text.append("  (Player name: ")
+                    .append(model.getPlayerName().toString())
+                    .append(") ")
+                    .append("\n");
+            modalUi.add(new Label(text.toString()), 1, i);
+            text = new StringBuilder();
+            i++;
+        }
+        ;
+        return i;
     }
 
     private void onKeyPressed(KeyEvent keyEvent) {
