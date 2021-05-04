@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 
 public class GameDatabaseManager {
     private PlayerDao playerDao;
-
+    private GameState gameState;
     private GameStateDao gameStateDao;
     private PlayerModel model;
     private MonstersDao monstersDao;
@@ -46,12 +46,12 @@ public class GameDatabaseManager {
 
     public void saveMonsters(GameMap map){
         MonstersModel monstersModel = new MonstersModel(map);
-        monstersDao.add(monstersModel);
+        monstersDao.add(monstersModel, gameState.getId());
     }
 
     public void saveItems(GameMap map) {
         ItemsModel itemsModel = new ItemsModel(map);
-        itemsDao.add(itemsModel);
+        itemsDao.add(itemsModel, gameState.getId());
     }
 
     public void updatePlayer(PlayerModel player) {

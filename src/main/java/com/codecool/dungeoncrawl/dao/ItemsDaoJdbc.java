@@ -14,7 +14,7 @@ public class ItemsDaoJdbc implements ItemsDao {
     }
 
     @Override
-    public void add(ItemsModel items) {
+    public void add(ItemsModel items, int gameId) {
         try (Connection conn = dataSource.getConnection()) {
             for (ItemsModel.ItemPosition item : items.getItems()) {
                 String sql = "INSERT INTO items (item_name, x, y, game_id) VALUES (?, ?, ?, ?)";
@@ -22,7 +22,7 @@ public class ItemsDaoJdbc implements ItemsDao {
                 statement.setString(1, item.getName());
                 statement.setInt(2, item.getX());
                 statement.setInt(3, item.getY());
-                statement.setInt(4, 100);
+                statement.setInt(4, gameId);
                 statement.executeUpdate();
             }
         } catch (SQLException e) {
