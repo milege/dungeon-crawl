@@ -4,6 +4,7 @@ import com.codecool.dungeoncrawl.model.InventoryModel;
 
 import javax.sql.DataSource;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class InventoryDaoJdbc implements InventoryDao {
@@ -29,15 +30,33 @@ public class InventoryDaoJdbc implements InventoryDao {
     }
 
     @Override
-    public void update(InventoryModel inventory) {}
-
-    @Override
-    public InventoryModel get(int id) {
-        return null;
+    public void update(InventoryModel inventory, int playerId) {
+        try (Connection conn = dataSource.getConnection()) {
+            String sql = "DELETE FROM inventory WHERE player_id = ?";
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setInt(1, playerId);
+            statement.executeUpdate();
+            add(inventory, playerId);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
-    public List<InventoryModel> getAll() {
-        return null;
+    public List<String> get(int playerId) {
+        try (Connection conn = dataSource.getConnection()) {
+            String sql = "SELECT item_name FROM inventory WHERE player_id = ?";
+            List<String> result = new ArrayList<>();
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setInt(1, playerId);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                result.add(resultSet.getString(1));
+            }
+            return result;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
+
 }
