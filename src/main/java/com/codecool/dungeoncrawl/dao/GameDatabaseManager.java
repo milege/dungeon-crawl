@@ -1,6 +1,9 @@
 package com.codecool.dungeoncrawl.dao;
 
+import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.actors.Player;
+import com.codecool.dungeoncrawl.model.ItemsModel;
+import com.codecool.dungeoncrawl.model.MonstersModel;
 import com.codecool.dungeoncrawl.logic.items.Inventory;
 import com.codecool.dungeoncrawl.model.InventoryModel;
 import com.codecool.dungeoncrawl.model.PlayerModel;
@@ -11,13 +14,16 @@ import java.sql.SQLException;
 
 public class GameDatabaseManager {
     private PlayerDao playerDao;
+    private MonstersDao monstersDao;
+    private ItemsDao itemsDao;
     private InventoryDao inventoryDao;
     private int playerId;
-
 
     public void setup() throws SQLException {
         DataSource dataSource = connect();
         playerDao = new PlayerDaoJdbc(dataSource);
+        monstersDao = new MonstersDaoJdbc(dataSource);
+        itemsDao = new ItemsDaoJdbc(dataSource);
         inventoryDao = new InventoryDaoJdbc(dataSource);
     }
 
@@ -30,6 +36,16 @@ public class GameDatabaseManager {
     public void saveInventory(Inventory inventory) {
         InventoryModel model = new InventoryModel(inventory);
         inventoryDao.add(model, playerId);
+    }
+
+    public void saveMonsters(GameMap map){
+        MonstersModel monstersModel = new MonstersModel(map);
+        monstersDao.add(monstersModel);
+    }
+
+    public void saveItems(GameMap map) {
+        ItemsModel itemsModel = new ItemsModel(map);
+        itemsDao.add(itemsModel);
     }
 
     private DataSource connect() throws SQLException {
