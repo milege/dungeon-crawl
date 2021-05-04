@@ -9,6 +9,15 @@ public class PlayerModel extends BaseModel {
     private int y;
     private int defense;
     private int attack;
+    private int vision;
+
+    public int getVision() {
+        return vision;
+    }
+
+    public void setVision(int vision) {
+        this.vision = vision;
+    }
 
     public int getDefense() {
         return defense;
@@ -39,6 +48,7 @@ public class PlayerModel extends BaseModel {
         this.hp = player.getHealth();
         this.defense = player.getDefenseStrength();
         this.attack = player.getAttackStrength();
+        this.vision = player.getVision();
 
     }
 

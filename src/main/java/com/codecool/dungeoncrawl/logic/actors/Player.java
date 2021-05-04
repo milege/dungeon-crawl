@@ -18,7 +18,7 @@ public class Player extends Actor {
     private final Inventory inventory = new Inventory();
     private int vision;
 
-    private String name;
+    private String name = "Player";
 
     private Player(Cell cell) {
         super(cell);

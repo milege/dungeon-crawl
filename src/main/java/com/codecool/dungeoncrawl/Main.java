@@ -30,7 +30,7 @@ public class Main extends Application {
             25 * Tiles.TILE_WIDTH,
             25 * Tiles.TILE_WIDTH);
     GraphicsContext context = canvas.getGraphicsContext2D();
-    TextField nameField = new TextField("Your name");
+    TextField nameField = new TextField("Player");
     Label nameLabel = new Label();
     Label healthLabel = new Label();
     Label attackLabel = new Label();
