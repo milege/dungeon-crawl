@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface ItemsDao {
     void add(ItemsModel items, int gameId);
-    void update(ItemsModel items);
+    void update(ItemsModel items, int gameId);
     ItemsModel get(int id);
     List<ItemsModel> getAll();
 }

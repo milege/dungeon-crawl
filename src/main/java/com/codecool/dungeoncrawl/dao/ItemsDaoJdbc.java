@@ -32,8 +32,16 @@ public class ItemsDaoJdbc implements ItemsDao {
     }
 
     @Override
-    public void update(ItemsModel items) {
-
+    public void update(ItemsModel items, int gameId) {
+        try (Connection conn = dataSource.getConnection()) {
+            String sql = "DELETE FROM items WHERE game_id = ?";
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setInt(1, gameId);
+            statement.executeUpdate();
+            add(items, gameId);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
