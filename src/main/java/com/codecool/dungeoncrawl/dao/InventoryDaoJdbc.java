@@ -4,6 +4,7 @@ import com.codecool.dungeoncrawl.model.InventoryModel;
 
 import javax.sql.DataSource;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class InventoryDaoJdbc implements InventoryDao {
@@ -42,12 +43,20 @@ public class InventoryDaoJdbc implements InventoryDao {
     }
 
     @Override
-    public InventoryModel get(int id) {
-        return null;
+    public List<String> get(int playerId) {
+        try (Connection conn = dataSource.getConnection()) {
+            String sql = "SELECT item_name FROM inventory WHERE player_id = ?";
+            List<String> result = new ArrayList<>();
+            PreparedStatement st = conn.prepareStatement(sql);
+            st.setInt(1, playerId);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                result.add(rs.getString(1));
+            }
+            return result;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    @Override
-    public List<InventoryModel> getAll() {
-        return null;
-    }
 }
