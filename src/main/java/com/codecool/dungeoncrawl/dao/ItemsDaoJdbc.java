@@ -1,9 +1,11 @@
 package com.codecool.dungeoncrawl.dao;
 
+import com.codecool.dungeoncrawl.logic.items.Item;
 import com.codecool.dungeoncrawl.model.ItemsModel;
 
 import javax.sql.DataSource;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ItemsDaoJdbc implements ItemsDao {
@@ -45,8 +47,20 @@ public class ItemsDaoJdbc implements ItemsDao {
     }
 
     @Override
-    public ItemsModel get(int id) {
-        return null;
+    public List<ItemsModel.ItemPosition> get(int gameId) {
+        try (Connection conn = dataSource.getConnection()) {
+            String sql = "SELECT item_name, x, y FROM items WHERE game_id = ?";
+            List<ItemsModel.ItemPosition> result = new ArrayList<>();
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setInt(1, gameId);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                result.add(new ItemsModel().new ItemPosition(resultSet.getString(1), resultSet.getInt(2), resultSet.getInt(3)));
+            }
+            return result;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

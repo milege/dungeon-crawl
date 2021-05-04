@@ -33,6 +33,8 @@ public class ItemsModel {
 
     private final List<ItemPosition> items = new ArrayList<>();
 
+    public ItemsModel() {}
+
     public ItemsModel(GameMap map) {
         Cell[][] cells = map.getCells();
         for (int i = 0; i < map.getWidth(); i++) {
