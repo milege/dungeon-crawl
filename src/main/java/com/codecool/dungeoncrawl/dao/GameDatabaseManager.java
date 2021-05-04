@@ -12,7 +12,7 @@ import org.postgresql.ds.PGSimpleDataSource;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
-import java.sql.Date;
+import java.time.LocalDateTime;
 
 public class GameDatabaseManager {
     private PlayerDao playerDao;
@@ -66,7 +66,7 @@ public class GameDatabaseManager {
         playerDao.getAll();
     }
 
-    public void saveGameState(String currentMap, Date savedAt){
+    public void saveGameState(String currentMap, LocalDateTime savedAt){
         GameState gs = new GameState(currentMap, savedAt, model);
         gameStateDao.add(gs);
     }

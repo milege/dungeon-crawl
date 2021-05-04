@@ -24,6 +24,8 @@ import javafx.stage.Stage;
 import javafx.scene.image.Image;
 
 import java.sql.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 
 public class Main extends Application {
@@ -105,8 +107,8 @@ public class Main extends Application {
 
         saveGameButton.setOnAction(onClick -> {
             gameDatabaseManager.savePlayer(map.getPlayer());
-            Date now = new Date(System.currentTimeMillis());
-            gameDatabaseManager.saveGameState(currentMap, now);
+            LocalDateTime localDate = LocalDateTime.now();
+            gameDatabaseManager.saveGameState(currentMap, localDate);
             gameDatabaseManager.saveMonsters(map);
             gameDatabaseManager.saveItems(map);
             gameDatabaseManager.saveInventory(map.getPlayer().getInventory());
