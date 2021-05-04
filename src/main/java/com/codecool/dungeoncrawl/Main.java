@@ -102,7 +102,9 @@ public class Main extends Application {
 
         saveGameButton.setOnAction(onClick -> {
             gameDatabaseManager.savePlayer(map.getPlayer());
-            gameDatabaseManager.getAll();
+            gameDatabaseManager.saveMonsters(map);
+            gameDatabaseManager.saveItems(map);
+            gameDatabaseManager.saveInventory(map.getPlayer().getInventory());
             ui.requestFocus();
             refresh();
         });
