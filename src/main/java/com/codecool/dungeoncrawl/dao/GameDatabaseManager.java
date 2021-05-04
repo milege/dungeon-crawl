@@ -67,8 +67,8 @@ public class GameDatabaseManager {
     }
 
     public void saveGameState(String currentMap, LocalDateTime savedAt){
-        GameState gs = new GameState(currentMap, savedAt, model);
-        gameStateDao.add(gs);
+        gameState = new GameState(currentMap, savedAt, model);
+        gameStateDao.add(gameState);
     }
 
     private DataSource connect() throws SQLException {
