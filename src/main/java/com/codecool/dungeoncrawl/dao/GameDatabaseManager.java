@@ -13,6 +13,7 @@ import org.postgresql.ds.PGSimpleDataSource;
 import javax.sql.DataSource;
 import java.sql.SQLException;
 import java.sql.Date;
+import java.util.List;
 
 public class GameDatabaseManager {
     private PlayerDao playerDao;
@@ -62,8 +63,8 @@ public class GameDatabaseManager {
 //        playerDao.get(player.getId());
     }
 
-    public void getAll() {
-        playerDao.getAll();
+    public List<PlayerModel> getAll() {
+        return playerDao.getAll();
     }
 
     public void saveGameState(String currentMap, Date savedAt){

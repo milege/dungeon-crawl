@@ -14,14 +14,19 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.scene.image.Image;
+import javafx.stage.StageStyle;
+import javafx.stage.Window;
 
 import java.sql.Date;
 
@@ -45,6 +50,8 @@ public class Main extends Application {
     Button drinkPotionButton = new Button("Drink Potion");
     Button nameSubmitButton = new Button("Submit");
     Button saveGameButton = new Button("Save Game");
+    Button modalButton = new Button("Load Game");
+    Button loadGameButton = new Button("Load this Gamesave");
     Image logo = new Image("/logo.png", 180, 100, true, false);
 
     public static void main(String[] args) {
@@ -77,6 +84,8 @@ public class Main extends Application {
         ui.add(itemPickUpButton,0,9);
         ui.add(drinkPotionButton,0,10);
         ui.add(saveGameButton, 0,11);
+        ui.add(modalButton, 0,12);
+
 
         drinkPotionButton.setDisable(true);
 
@@ -110,6 +119,50 @@ public class Main extends Application {
             gameDatabaseManager.saveMonsters(map);
             gameDatabaseManager.saveItems(map);
             gameDatabaseManager.saveInventory(map.getPlayer().getInventory());
+            ui.requestFocus();
+            refresh();
+        });
+
+        modalButton.setOnAction(onClick -> {
+            GridPane modalUi = new GridPane();
+            modalUi.setPrefWidth(600);
+            modalUi.setPadding(new Insets(10));
+            modalUi.setVgap(5);
+            modalUi.setStyle("-fx-background-color:#ad9d94; -fx-font-size: 16");
+            modalUi.add(new ImageView(logo), 0, 0);
+            StringBuilder text = new StringBuilder();
+            int i = 1;
+            for (PlayerModel model : gameDatabaseManager.getAll())
+            {
+                text.append("  (Player name: ")
+                        .append(model.getPlayerName().toString())
+                        .append(", ")
+                        .append("Health: ")
+                        .append(String.valueOf(model.getHp()) + ")")
+                        .append("\n");
+                modalUi.add(new Label(text.toString()), 1, i);
+                text = new StringBuilder();
+                i++;
+            };
+            VBox vboxForButtons = new VBox();
+            for (int j = 1; j < i; j++){
+                Button btnNumber = new Button();
+                btnNumber.setPrefWidth(220);
+                btnNumber.setText("Load Gamesave " + String.valueOf(j));
+                btnNumber.setOnAction((ActionEvent)->{
+                    System.out.println(btnNumber.getText());
+                });
+                vboxForButtons.getChildren().add(btnNumber);
+                modalUi.add(vboxForButtons, 0,j);
+                vboxForButtons = new VBox();
+            }
+            Scene scene = new Scene(modalUi);
+            Stage stage = new Stage();
+            stage.setTitle("SELECT A GAMESAVE TO LOAD");
+            stage.setScene(scene);
+            stage.initModality(Modality.NONE);
+            stage.initStyle(StageStyle.UTILITY);
+            stage.show();
             ui.requestFocus();
             refresh();
         });
