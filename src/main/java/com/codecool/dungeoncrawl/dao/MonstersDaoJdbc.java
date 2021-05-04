@@ -14,7 +14,7 @@ public class MonstersDaoJdbc implements MonstersDao {
     }
 
     @Override
-    public void add(MonstersModel monsters) {
+    public void add(MonstersModel monsters, int gameId) {
         try (Connection conn = dataSource.getConnection()) {
             for (MonstersModel.MonsterPosition monster : monsters.getMonsters()) {
                 String sql = "INSERT INTO monsters (monster_name, x, y, game_id) VALUES (?, ?, ?, ?)";
@@ -22,7 +22,7 @@ public class MonstersDaoJdbc implements MonstersDao {
                 statement.setString(1, monster.getName());
                 statement.setInt(2, monster.getX());
                 statement.setInt(3, monster.getY());
-                statement.setInt(4, 100);
+                statement.setInt(4, gameId);
                 statement.executeUpdate();
             }
         } catch (SQLException e) {

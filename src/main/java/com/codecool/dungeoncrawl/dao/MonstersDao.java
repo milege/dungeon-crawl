@@ -5,7 +5,7 @@ import com.codecool.dungeoncrawl.model.MonstersModel;
 import java.util.List;
 
 public interface MonstersDao {
-    void add(MonstersModel monsters);
+    void add(MonstersModel monsters, int gameId);
     void update(MonstersModel monsters);
     MonstersModel get(int id);
     List<MonstersModel> getAll();
