@@ -47,11 +47,11 @@ public class InventoryDaoJdbc implements InventoryDao {
         try (Connection conn = dataSource.getConnection()) {
             String sql = "SELECT item_name FROM inventory WHERE player_id = ?";
             List<String> result = new ArrayList<>();
-            PreparedStatement st = conn.prepareStatement(sql);
-            st.setInt(1, playerId);
-            ResultSet rs = st.executeQuery();
-            while (rs.next()) {
-                result.add(rs.getString(1));
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setInt(1, playerId);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                result.add(resultSet.getString(1));
             }
             return result;
         } catch (SQLException e) {
