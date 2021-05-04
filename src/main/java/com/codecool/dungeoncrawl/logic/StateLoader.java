@@ -96,7 +96,16 @@ public class StateLoader {
         }
         return map;
     }
-    public static void loadPlayerState(Player player, PlayerModel playerModel) {
-
+    public static void loadPlayerState(Player player, PlayerModel loadedPlayerModel, GameMap map, Inventory inventory) {
+        Cell playerCell = map.getCell(loadedPlayerModel.getX(), loadedPlayerModel.getY());
+        player.setCell(playerCell);
+        player.setName(loadedPlayerModel.getPlayerName());
+        player.setHealth(loadedPlayerModel.getHp());
+        player.setVision(loadedPlayerModel.getVision());
+        player.setAttackStrength(loadedPlayerModel.getAttack());
+        player.setDefenseStrength(loadedPlayerModel.getDefense());
+        player.setInventory(inventory);
+        map.setPlayer(player);
+        playerCell.setActor(player);
     }
 }
