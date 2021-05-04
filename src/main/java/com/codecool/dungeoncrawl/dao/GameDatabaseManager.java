@@ -14,6 +14,7 @@ import javax.sql.DataSource;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 
+
 public class GameDatabaseManager {
     private PlayerDao playerDao;
     private GameState gameState;
@@ -70,8 +71,8 @@ public class GameDatabaseManager {
 //        playerDao.get(player.getId());
     }
 
-    public void getAll() {
-        playerDao.getAll();
+    public List<PlayerModel> getAll() {
+        return playerDao.getAll();
     }
 
     private void saveGameState(String currentMap, LocalDateTime savedAt){
