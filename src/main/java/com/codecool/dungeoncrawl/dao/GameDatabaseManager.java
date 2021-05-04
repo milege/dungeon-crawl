@@ -24,12 +24,13 @@ public class GameDatabaseManager {
     public void savePlayer(Player player) {
         PlayerModel model = new PlayerModel(player);
         playerDao.add(model);
+        ArrayList<Item> itemsInInventory = player.getInventory().getItems();
+        saveInventory(itemsInInventory, model.getId());
     }
 
-    public void saveInventory(Player player) {
-        ArrayList<Item> itemsInInventory = player.getInventory().getItems();
+    public void saveInventory(ArrayList<Item> itemsInInventory, int playerId) {
         for (Item item : itemsInInventory) {
-            InventoryModel model = new InventoryModel(item.getName(), 1);
+            InventoryModel model = new InventoryModel(item.getName(), playerId);
             inventoryDao.add(model);
         }
     }
