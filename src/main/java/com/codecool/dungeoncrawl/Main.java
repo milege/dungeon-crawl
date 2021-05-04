@@ -1,10 +1,12 @@
 package com.codecool.dungeoncrawl;
 
 import com.codecool.dungeoncrawl.dao.GameDatabaseManager;
+import com.codecool.dungeoncrawl.dao.PlayerDaoJdbc;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
+import com.codecool.dungeoncrawl.model.PlayerModel;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -105,6 +107,9 @@ public class Main extends Application {
             gameDatabaseManager.savePlayer(map.getPlayer());
             Date now = new Date(System.currentTimeMillis());
             gameDatabaseManager.saveGameState(currentMap, now);
+            gameDatabaseManager.saveMonsters(map);
+            gameDatabaseManager.saveItems(map);
+            gameDatabaseManager.saveInventory(map.getPlayer().getInventory());
             ui.requestFocus();
             refresh();
         });
