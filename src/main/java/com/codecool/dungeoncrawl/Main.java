@@ -21,10 +21,13 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.scene.image.Image;
 
+import java.sql.Date;
+
 
 public class Main extends Application {
     GameDatabaseManager gameDatabaseManager = new GameDatabaseManager();
     GameMap map = MapLoader.loadMap("/map.txt", CellType.FLOOR);
+    String currentMap = "/map.txt";
     GameMap firstMap;
     Canvas canvas = new Canvas(
             25 * Tiles.TILE_WIDTH,
@@ -100,6 +103,8 @@ public class Main extends Application {
 
         saveGameButton.setOnAction(onClick -> {
             gameDatabaseManager.savePlayer(map.getPlayer());
+            Date now = new Date(System.currentTimeMillis());
+            gameDatabaseManager.saveGameState(currentMap, now);
             ui.requestFocus();
             refresh();
         });
@@ -182,6 +187,7 @@ public class Main extends Application {
     private void loadNewMap() {
         firstMap = map;
         map = MapLoader.loadMap("/map2.txt", CellType.GRASS);
+        currentMap = "/map2.txt";
         refresh();
     }
 }
