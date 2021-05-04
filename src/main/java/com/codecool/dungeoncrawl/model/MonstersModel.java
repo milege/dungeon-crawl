@@ -40,9 +40,7 @@ public class MonstersModel {
             for (int j = 0; j < map.getHeight(); j++) {
                 if (cells[i][j].getActor() != null && cells[i][j].getActor() != map.getPlayer()){
                     String name = cells[i][j].getActor().getTileName();
-                    int x = cells[i][j].getActor().getX();
-                    int y = cells[i][j].getActor().getY();
-                    monsters.add(new MonsterPosition(name, x, y));
+                    monsters.add(new MonsterPosition(name, i, j));
                 }
             }
         }
