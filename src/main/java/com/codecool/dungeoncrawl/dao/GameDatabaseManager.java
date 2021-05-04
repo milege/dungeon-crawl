@@ -12,8 +12,8 @@ import org.postgresql.ds.PGSimpleDataSource;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
-import java.sql.Date;
-import java.util.List;
+import java.time.LocalDateTime;
+
 
 public class GameDatabaseManager {
     private PlayerDao playerDao;
@@ -23,7 +23,7 @@ public class GameDatabaseManager {
     private MonstersDao monstersDao;
     private ItemsDao itemsDao;
     private InventoryDao inventoryDao;
-    private int playerId;
+
 
     public void setup() throws SQLException {
         DataSource dataSource = connect();
@@ -34,23 +34,31 @@ public class GameDatabaseManager {
         gameStateDao = new GameStateDaoJdbc(dataSource);
     }
 
-    public void savePlayer(Player player) {
+    public void saveGame(Player player, String currentMap, GameMap map) {
+        savePlayer(player);
+        LocalDateTime localDate = LocalDateTime.now();
+        saveGameState(currentMap, localDate);
+        saveMonsters(map);
+        saveItems(map);
+        saveInventory(player.getInventory());
+    }
+
+    private void savePlayer(Player player) {
         model = new PlayerModel(player);
         playerDao.add(model);
-        playerId = model.getId();
     }
 
-    public void saveInventory(Inventory inventory) {
-        InventoryModel model = new InventoryModel(inventory);
-        inventoryDao.add(model, playerId);
+    private void saveInventory(Inventory inventory) {
+        InventoryModel inventoryModel = new InventoryModel(inventory);
+        inventoryDao.add(inventoryModel, model.getId());
     }
 
-    public void saveMonsters(GameMap map){
+    private void saveMonsters(GameMap map){
         MonstersModel monstersModel = new MonstersModel(map);
         monstersDao.add(monstersModel, gameState.getId());
     }
 
-    public void saveItems(GameMap map) {
+    private void saveItems(GameMap map) {
         ItemsModel itemsModel = new ItemsModel(map);
         itemsDao.add(itemsModel, gameState.getId());
     }
@@ -67,7 +75,7 @@ public class GameDatabaseManager {
         return playerDao.getAll();
     }
 
-    public void saveGameState(String currentMap, Date savedAt){
+    private void saveGameState(String currentMap, LocalDateTime savedAt){
         gameState = new GameState(currentMap, savedAt, model);
         gameStateDao.add(gameState);
     }
