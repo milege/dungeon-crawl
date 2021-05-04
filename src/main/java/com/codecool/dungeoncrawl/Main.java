@@ -102,6 +102,7 @@ public class Main extends Application {
             gameDatabaseManager.savePlayer(map.getPlayer());
             gameDatabaseManager.saveMonsters(map);
             gameDatabaseManager.saveItems(map);
+            gameDatabaseManager.saveInventory(map.getPlayer().getInventory());
             ui.requestFocus();
             refresh();
         });
