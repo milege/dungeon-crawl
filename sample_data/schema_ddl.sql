@@ -1,3 +1,15 @@
+ALTER TABLE IF EXISTS ONLY public.game_state
+    DROP CONSTRAINT IF EXISTS fk_player_id CASCADE;
+
+ALTER TABLE IF EXISTS ONLY public.inventory
+    DROP CONSTRAINT IF EXISTS fk_player_id CASCADE;
+
+ALTER TABLE IF EXISTS ONLY public.monsters
+    DROP CONSTRAINT IF EXISTS fk_game_id CASCADE;
+
+ALTER TABLE IF EXISTS ONLY public.items
+    DROP CONSTRAINT IF EXISTS fk_game_id CASCADE;
+
 DROP TABLE IF EXISTS public.game_state;
 CREATE TABLE public.game_state (
     id serial NOT NULL PRIMARY KEY,
@@ -14,7 +26,8 @@ CREATE TABLE public.player (
     x integer NOT NULL,
     y integer NOT NULL, 
     defense integer NOT NULL,
-    attack integer NOT NULL
+    attack integer NOT NULL,
+    vision integer NOT NULL
 );
 
 DROP TABLE IF EXISTS public.inventory;

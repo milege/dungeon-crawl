@@ -30,7 +30,7 @@ public class Main extends Application {
             25 * Tiles.TILE_WIDTH,
             25 * Tiles.TILE_WIDTH);
     GraphicsContext context = canvas.getGraphicsContext2D();
-    TextField nameField = new TextField("Your name");
+    TextField nameField = new TextField("Player");
     Label nameLabel = new Label();
     Label healthLabel = new Label();
     Label attackLabel = new Label();
@@ -39,6 +39,7 @@ public class Main extends Application {
     Button itemPickUpButton = new Button("Pick up item");
     Button drinkPotionButton = new Button("Drink Potion");
     Button nameSubmitButton = new Button("Submit");
+    Button saveGameButton = new Button("Save Game");
     Image logo = new Image("/logo.png", 180, 100, true, false);
 
     public static void main(String[] args) {
@@ -70,6 +71,7 @@ public class Main extends Application {
         ui.add(inventoryLabel, 0, 8);
         ui.add(itemPickUpButton,0,9);
         ui.add(drinkPotionButton,0,10);
+        ui.add(saveGameButton, 0,11);
 
         drinkPotionButton.setDisable(true);
 
@@ -92,6 +94,12 @@ public class Main extends Application {
 
         nameSubmitButton.setOnAction(onClick -> {
             map.getPlayer().setName(nameField.getText());
+            ui.requestFocus();
+            refresh();
+        });
+
+        saveGameButton.setOnAction(onClick -> {
+            gameDatabaseManager.savePlayer(map.getPlayer());
             ui.requestFocus();
             refresh();
         });
