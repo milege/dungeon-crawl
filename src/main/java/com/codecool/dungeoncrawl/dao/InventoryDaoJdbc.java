@@ -14,16 +14,15 @@ public class InventoryDaoJdbc implements InventoryDao {
     }
 
     @Override
-    public void add(InventoryModel inventory) {
+    public void add(InventoryModel inventory, int playerId) {
         try (Connection conn = dataSource.getConnection()) {
-            String sql = "INSERT INTO inventory (item_name, player_id) VALUES (?, ?)";
-            PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            statement.setString(1, inventory.getItemName());
-            statement.setInt(2, inventory.getPlayerId());
-            statement.executeUpdate();
-            ResultSet resultSet = statement.getGeneratedKeys();
-            resultSet.next();
-            inventory.setId(resultSet.getInt(1));
+            for (String itemName : inventory.getItems()) {
+                String sql = "INSERT INTO inventory (item_name, player_id) VALUES (?, ?)";
+                PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                statement.setString(1, itemName);
+                statement.setInt(2, playerId);
+                statement.executeUpdate();
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
