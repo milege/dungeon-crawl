@@ -106,12 +106,7 @@ public class Main extends Application {
         });
 
         saveGameButton.setOnAction(onClick -> {
-            gameDatabaseManager.savePlayer(map.getPlayer());
-            LocalDateTime localDate = LocalDateTime.now();
-            gameDatabaseManager.saveGameState(currentMap, localDate);
-            gameDatabaseManager.saveMonsters(map);
-            gameDatabaseManager.saveItems(map);
-            gameDatabaseManager.saveInventory(map.getPlayer().getInventory());
+            gameDatabaseManager.saveGame(map.getPlayer(), currentMap, map);
             ui.requestFocus();
             refresh();
         });

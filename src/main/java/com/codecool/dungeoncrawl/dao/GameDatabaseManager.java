@@ -33,23 +33,31 @@ public class GameDatabaseManager {
         gameStateDao = new GameStateDaoJdbc(dataSource);
     }
 
+    public void saveGame(Player player, String currentMap, GameMap map) {
+        savePlayer(player);
+        LocalDateTime localDate = LocalDateTime.now();
+        saveGameState(currentMap, localDate);
+        saveMonsters(map);
+        saveItems(map);
+        saveInventory(player.getInventory());
+    }
 
-    public void savePlayer(Player player) {
+    private void savePlayer(Player player) {
         model = new PlayerModel(player);
         playerDao.add(model);
     }
 
-    public void saveInventory(Inventory inventory) {
+    private void saveInventory(Inventory inventory) {
         InventoryModel inventoryModel = new InventoryModel(inventory);
         inventoryDao.add(inventoryModel, model.getId());
     }
 
-    public void saveMonsters(GameMap map){
+    private void saveMonsters(GameMap map){
         MonstersModel monstersModel = new MonstersModel(map);
         monstersDao.add(monstersModel, gameState.getId());
     }
 
-    public void saveItems(GameMap map) {
+    private void saveItems(GameMap map) {
         ItemsModel itemsModel = new ItemsModel(map);
         itemsDao.add(itemsModel, gameState.getId());
     }
@@ -66,7 +74,7 @@ public class GameDatabaseManager {
         playerDao.getAll();
     }
 
-    public void saveGameState(String currentMap, LocalDateTime savedAt){
+    private void saveGameState(String currentMap, LocalDateTime savedAt){
         gameState = new GameState(currentMap, savedAt, model);
         gameStateDao.add(gameState);
     }
