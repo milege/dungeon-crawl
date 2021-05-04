@@ -4,6 +4,10 @@ public class InventoryModel extends BaseModel {
     private String itemName;
     private int playerId;
 
+    public InventoryModel(String itemName, int playerId) {
+        this.itemName = itemName;
+        this.playerId = playerId;
+    }
 
     public String getItemName() {
         return itemName;
