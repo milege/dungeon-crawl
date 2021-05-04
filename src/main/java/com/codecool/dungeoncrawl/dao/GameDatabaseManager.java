@@ -22,7 +22,7 @@ public class GameDatabaseManager {
     private MonstersDao monstersDao;
     private ItemsDao itemsDao;
     private InventoryDao inventoryDao;
-    private int playerId;
+
 
     public void setup() throws SQLException {
         DataSource dataSource = connect();
@@ -33,15 +33,15 @@ public class GameDatabaseManager {
         gameStateDao = new GameStateDaoJdbc(dataSource);
     }
 
+
     public void savePlayer(Player player) {
         model = new PlayerModel(player);
         playerDao.add(model);
-        playerId = model.getId();
     }
 
     public void saveInventory(Inventory inventory) {
-        InventoryModel model = new InventoryModel(inventory);
-        inventoryDao.add(model, playerId);
+        InventoryModel inventoryModel = new InventoryModel(inventory);
+        inventoryDao.add(inventoryModel, model.getId());
     }
 
     public void saveMonsters(GameMap map){
