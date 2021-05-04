@@ -100,6 +100,7 @@ public class Main extends Application {
 
         saveGameButton.setOnAction(onClick -> {
             gameDatabaseManager.savePlayer(map.getPlayer());
+            gameDatabaseManager.saveMonsters(map);
             ui.requestFocus();
             refresh();
         });
