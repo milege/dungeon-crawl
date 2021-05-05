@@ -92,8 +92,8 @@ public class GameDatabaseManager {
         return playerDao.getAll();
     }
 
-    public boolean saveExist() {
-        return false;
+    public boolean saveExist(String playerName) {
+        return playerDao.checkIfPlayerInDb(playerName);
     }
 
     public void updateSave(Player player, String currentMap, GameMap map) {
