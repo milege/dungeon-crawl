@@ -31,8 +31,16 @@ public class MonstersDaoJdbc implements MonstersDao {
     }
 
     @Override
-    public void update(MonstersModel monsters) {
-
+    public void update(MonstersModel monsters, int gameId) {
+        try (Connection conn = dataSource.getConnection()) {
+            String sql = "DELETE FROM monsters WHERE game_id = ?";
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setInt(1, gameId);
+            statement.executeUpdate();
+            add(monsters, gameId);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
