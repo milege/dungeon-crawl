@@ -9,5 +9,5 @@ public interface PlayerDao {
     void update(PlayerModel player);
     PlayerModel get(int id);
     List<PlayerModel> getAll();
-    boolean checkIfPlayerInDb(String name);
+    int checkIfPlayerInDb(String name);
 }

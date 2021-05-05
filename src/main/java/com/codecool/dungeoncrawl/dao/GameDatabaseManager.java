@@ -24,6 +24,7 @@ public class GameDatabaseManager {
     private MonstersDao monstersDao;
     private ItemsDao itemsDao;
     private InventoryDao inventoryDao;
+    private int currentSaveId;
 
     public void setup() throws SQLException {
         DataSource dataSource = connect();
@@ -93,14 +94,17 @@ public class GameDatabaseManager {
     }
 
     public boolean saveExist(String playerName) {
-        return playerDao.checkIfPlayerInDb(playerName);
+        currentSaveId = playerDao.checkIfPlayerInDb(playerName);
+        return currentSaveId != 0;
     }
 
     public void updateSave(Player player, String currentMap, GameMap map) {
         model = new PlayerModel(player);
+        model.setId(currentSaveId);
         updatePlayer(model);
         LocalDateTime localDate = LocalDateTime.now();
         gameState = new GameState(currentMap, localDate, model.getId());
+        gameState.setId(getGameState(model.getId()).getId());
         updateGameState(gameState);
         MonstersModel monstersModel = new MonstersModel(map);
         updateMonsters(monstersModel);
