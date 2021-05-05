@@ -158,13 +158,13 @@ public class Main extends Application {
             Button btnNumber = new Button();
             btnNumber.setPrefWidth(220);
             btnNumber.setText(String.valueOf(j));
-            int playedId = j;
+            int playerId = j;
             btnNumber.setOnAction((ActionEvent)->{
                 oldMap = map;
-                GameState loadedGameState = gameDatabaseManager.getGameState(playedId);
+                GameState loadedGameState = gameDatabaseManager.getGameState(playerId);
                 map = StateLoader.loadMapState(loadedGameState.getCurrentMap());
-                StateLoader.loadPlayerState(oldMap.getPlayer(), gameDatabaseManager.getPlayer(playedId),
-                        map, gameDatabaseManager.getInventory(playedId));
+                StateLoader.loadPlayerState(oldMap.getPlayer(), gameDatabaseManager.getPlayer(playerId),
+                        map, gameDatabaseManager.getInventory(playerId));
                 StateLoader.loadMapElements(gameDatabaseManager.getItems(loadedGameState.getId()),
                         gameDatabaseManager.getMonsters(loadedGameState.getId()), map);
                 refresh();
