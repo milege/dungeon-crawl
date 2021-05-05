@@ -31,7 +31,7 @@ public class ItemsModel {
         }
     }
 
-    private final List<ItemPosition> items = new ArrayList<>();
+    private List<ItemPosition> items = new ArrayList<>();
 
     public ItemsModel() {}
 
@@ -50,4 +50,9 @@ public class ItemsModel {
     public List<ItemPosition> getItems() {
         return items;
     }
+
+    public void setItems(List<ItemPosition> items) {
+        this.items = items;
+    }
+
 }

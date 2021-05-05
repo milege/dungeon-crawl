@@ -47,17 +47,19 @@ public class ItemsDaoJdbc implements ItemsDao {
     }
 
     @Override
-    public List<ItemsModel.ItemPosition> get(int gameId) {
+    public ItemsModel get(int gameId) {
         try (Connection conn = dataSource.getConnection()) {
             String sql = "SELECT item_name, x, y FROM items WHERE game_id = ?";
-            List<ItemsModel.ItemPosition> result = new ArrayList<>();
+            List<ItemsModel.ItemPosition> itemPositions = new ArrayList<>();
+            ItemsModel itemsModel = new ItemsModel();
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setInt(1, gameId);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                result.add(new ItemsModel().new ItemPosition(resultSet.getString(1), resultSet.getInt(2), resultSet.getInt(3)));
+                itemPositions.add(itemsModel.new ItemPosition(resultSet.getString(1), resultSet.getInt(2), resultSet.getInt(3)));
             }
-            return result;
+            itemsModel.setItems(itemPositions);
+            return itemsModel;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
