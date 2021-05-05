@@ -93,7 +93,7 @@ public class GameDatabaseManager {
     }
 
     private void saveGameState(String currentMap, LocalDateTime savedAt){
-        gameState = new GameState(currentMap, savedAt, model);
+        gameState = new GameState(currentMap, savedAt, model.getId());
         gameStateDao.add(gameState);
     }
 

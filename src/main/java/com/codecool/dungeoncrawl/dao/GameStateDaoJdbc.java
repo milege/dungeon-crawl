@@ -9,7 +9,6 @@ import java.util.List;
 public class GameStateDaoJdbc implements GameStateDao {
 
     private DataSource dataSource;
-    private PlayerModel player;
 
     public GameStateDaoJdbc(DataSource dataSource){this.dataSource = dataSource;}
 
@@ -20,7 +19,7 @@ public class GameStateDaoJdbc implements GameStateDao {
             PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, state.getCurrentMap());
             statement.setObject(2, state.getSavedAt());
-            statement.setInt(3, state.getPlayer().getId());
+            statement.setInt(3, state.getPlayerId());
             statement.executeUpdate();
             ResultSet resultSet = statement.getGeneratedKeys();
             resultSet.next();
@@ -35,11 +34,11 @@ public class GameStateDaoJdbc implements GameStateDao {
     @Override
     public void update(GameState state) {
         try (Connection conn = dataSource.getConnection()) {
-            String sql = "UPDATE player SET current_map = ?, saved_at = ?, WHERE player_id = ?";
+            String sql = "UPDATE game_state SET current_map = ?, saved_at = ? WHERE player_id = ?";
             PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, state.getCurrentMap());
-            statement.setDate(2, state.getSavedAt());
-            statement.setInt(3, state.getPlayer().getId());
+            statement.setObject(2, state.getSavedAt());
+            statement.setInt(3, state.getPlayerId());
             statement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -55,8 +54,9 @@ public class GameStateDaoJdbc implements GameStateDao {
             ResultSet resultSet = statement.executeQuery();
             GameState state = null;
             while (resultSet.next()) {
-                state = new GameState(resultSet.getString("current_map"), resultSet.getDate("saved_at"),
-                        player);
+                state = new GameState(resultSet.getString("current_map"),
+                        resultSet.getTimestamp("saved_at").toLocalDateTime(), id);
+                state.setId(resultSet.getInt("id"));
             }
             return state;
         } catch (SQLException e) {

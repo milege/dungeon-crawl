@@ -69,6 +69,7 @@ public class PlayerDaoJdbc implements PlayerDao {
                 model.setAttack(resultSet.getInt("attack"));
                 model.setVision(resultSet.getInt("vision"));
                 model.setHp(resultSet.getInt("hp"));
+                model.setId(id);
                 return model;
             }
         } catch (SQLException e) {
