@@ -15,10 +15,10 @@ import java.util.Arrays;
 public class Player extends Actor {
 
     private static Player instance;
-    private final Inventory inventory = new Inventory();
+    private Inventory inventory = new Inventory();
     private int vision;
-
     private String name = "Player";
+
 
     private Player(Cell cell) {
         super(cell);
@@ -90,6 +90,10 @@ public class Player extends Actor {
 
     public Inventory getInventory() {
         return inventory;
+    }
+
+    public void setInventory(Inventory inventory) {
+        this.inventory = inventory;
     }
 
     public String getTileName() {
