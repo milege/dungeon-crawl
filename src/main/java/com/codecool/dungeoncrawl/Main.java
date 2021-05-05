@@ -1,10 +1,9 @@
 package com.codecool.dungeoncrawl;
 
 import com.codecool.dungeoncrawl.dao.GameDatabaseManager;
-import com.codecool.dungeoncrawl.logic.Cell;
-import com.codecool.dungeoncrawl.logic.CellType;
-import com.codecool.dungeoncrawl.logic.GameMap;
-import com.codecool.dungeoncrawl.logic.MapLoader;
+import com.codecool.dungeoncrawl.logic.*;
+import com.codecool.dungeoncrawl.logic.actors.Player;
+import com.codecool.dungeoncrawl.model.GameState;
 import com.codecool.dungeoncrawl.model.PlayerModel;
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -32,7 +31,7 @@ public class Main extends Application {
     GameDatabaseManager gameDatabaseManager = new GameDatabaseManager();
     GameMap map = MapLoader.loadMap("/map.txt", CellType.FLOOR);
     String currentMap = "/map.txt";
-    GameMap firstMap;
+    GameMap oldMap;
     Canvas canvas = new Canvas(
             25 * Tiles.TILE_WIDTH,
             25 * Tiles.TILE_WIDTH);
@@ -159,8 +158,16 @@ public class Main extends Application {
             Button btnNumber = new Button();
             btnNumber.setPrefWidth(220);
             btnNumber.setText(String.valueOf(j));
+            int playedId = j;
             btnNumber.setOnAction((ActionEvent)->{
-                System.out.println(gameDatabaseManager.getAll().get(Integer.parseInt(btnNumber.getText()) - 1));
+                oldMap = map;
+                GameState loadedGameState = gameDatabaseManager.getGameState(playedId);
+                map = StateLoader.loadMapState(loadedGameState.getCurrentMap());
+                StateLoader.loadPlayerState(oldMap.getPlayer(), gameDatabaseManager.getPlayer(playedId),
+                        map, gameDatabaseManager.getInventory(playedId));
+                StateLoader.loadMapElements(gameDatabaseManager.getItems(loadedGameState.getId()),
+                        gameDatabaseManager.getMonsters(loadedGameState.getId()), map);
+                refresh();
             });
             vboxForButtons.getChildren().add(btnNumber);
             modalUi.add(vboxForButtons, 0,j);
@@ -244,7 +251,6 @@ public class Main extends Application {
     }
 
     private void loadNewMap() {
-        firstMap = map;
         map = MapLoader.loadMap("/map2.txt", CellType.GRASS);
         currentMap = "/map2.txt";
         refresh();

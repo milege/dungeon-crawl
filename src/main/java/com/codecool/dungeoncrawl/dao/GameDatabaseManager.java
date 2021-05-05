@@ -68,8 +68,24 @@ public class GameDatabaseManager {
         playerDao.update(player);
     }
 
-    public void getPlayer(Player player) {
-//        playerDao.get(player.getId());
+    public PlayerModel getPlayer(int id) {
+        return playerDao.get(id);
+    }
+
+    public InventoryModel getInventory(int id) {
+        return inventoryDao.get(id);
+    }
+
+    public MonstersModel getMonsters(int id) {
+        return monstersDao.get(id);
+    }
+
+    public ItemsModel getItems(int id){
+        return itemsDao.get(id);
+    }
+
+    public GameState getGameState(int id) {
+        return gameStateDao.get(id);
     }
 
     public List<PlayerModel> getAll() {
