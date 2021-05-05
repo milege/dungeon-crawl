@@ -2,6 +2,7 @@ package com.codecool.dungeoncrawl;
 
 import com.codecool.dungeoncrawl.dao.GameDatabaseManager;
 import com.codecool.dungeoncrawl.logic.*;
+import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.model.GameState;
 import com.codecool.dungeoncrawl.model.PlayerModel;
@@ -10,10 +11,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Label;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
@@ -24,6 +22,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.scene.image.Image;
 import javafx.stage.StageStyle;
+import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Window;
 
 
@@ -110,7 +109,11 @@ public class Main extends Application {
 
         saveGameButton.setOnAction(onClick -> {
             if (gameDatabaseManager.saveExist(map.getPlayer().getName())){
-                gameDatabaseManager.updateSave(map.getPlayer(), currentMap, map);
+                Alert alert = new Alert(AlertType.NONE, "Do you want to overwrite your previous save?", ButtonType.YES, ButtonType.NO, ButtonType.CANCEL);
+                alert.showAndWait();
+                if (alert.getResult() == ButtonType.YES) {
+                    gameDatabaseManager.updateSave(map.getPlayer(), currentMap, map);
+                }
             }else {
                 gameDatabaseManager.saveGame(map.getPlayer(), currentMap, map);
             }
