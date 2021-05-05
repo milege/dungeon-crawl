@@ -2,6 +2,7 @@ package com.codecool.dungeoncrawl.logic;
 
 import com.codecool.dungeoncrawl.logic.actors.*;
 import com.codecool.dungeoncrawl.logic.items.*;
+import com.codecool.dungeoncrawl.model.InventoryModel;
 import com.codecool.dungeoncrawl.model.ItemsModel;
 import com.codecool.dungeoncrawl.model.MonstersModel;
 import com.codecool.dungeoncrawl.model.PlayerModel;
@@ -99,7 +100,7 @@ public class StateLoader {
         return map;
     }
 
-    public static void loadPlayerState(Player player, PlayerModel loadedPlayerModel, GameMap map, Inventory inventory) {
+    public static void loadPlayerState(Player player, PlayerModel loadedPlayerModel, GameMap map, InventoryModel inventoryModel) {
         Cell playerCell = map.getCell(loadedPlayerModel.getX(), loadedPlayerModel.getY());
         player.setCell(playerCell);
         player.setName(loadedPlayerModel.getPlayerName());
@@ -107,9 +108,44 @@ public class StateLoader {
         player.setVision(loadedPlayerModel.getVision());
         player.setAttackStrength(loadedPlayerModel.getAttack());
         player.setDefenseStrength(loadedPlayerModel.getDefense());
-        player.setInventory(inventory);
+        player.setInventory(loadInventory(inventoryModel));
         map.setPlayer(player);
         playerCell.setActor(player);
+    }
+
+    private static Inventory loadInventory(InventoryModel inventoryModel){
+        Inventory newInventory = new Inventory();
+        for (String itemName : inventoryModel.getItems()){
+            switch (itemName) {
+                case "Key":
+                    newInventory.addToInventory(new Key());
+                    break;
+                case "Sword":
+                    newInventory.addToInventory(new Sword());
+                    break;
+                case "War hammer":
+                    newInventory.addToInventory(new WarHammer());
+                    break;
+                case "Small shield":
+                    newInventory.addToInventory(new SmallShield());
+                    break;
+                case "Medium shield":
+                    newInventory.addToInventory(new MediumShield());
+                    break;
+                case "Potion":
+                    newInventory.addToInventory(new Potion());
+                    break;
+                case "Potion cocktail":
+                    newInventory.addToInventory(new PotionCocktail());
+                    break;
+                case "Torch":
+                    newInventory.addToInventory(new Torch());
+                    break;
+                default:
+                    throw new RuntimeException("Unrecognized inventory item: '" + itemName + "'");
+            }
+        }
+        return newInventory;
     }
 
     public static void loadMapElements(ItemsModel items, MonstersModel monsters, GameMap map){
