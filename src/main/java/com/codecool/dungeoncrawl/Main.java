@@ -109,7 +109,11 @@ public class Main extends Application {
         });
 
         saveGameButton.setOnAction(onClick -> {
-            gameDatabaseManager.saveGame(map.getPlayer(), currentMap, map);
+            if (gameDatabaseManager.saveExist()){
+                gameDatabaseManager.updateSave(map.getPlayer(), currentMap, map);
+            }else {
+                gameDatabaseManager.saveGame(map.getPlayer(), currentMap, map);
+            }
             ui.requestFocus();
             refresh();
         });

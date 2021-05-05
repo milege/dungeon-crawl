@@ -25,7 +25,6 @@ public class GameDatabaseManager {
     private ItemsDao itemsDao;
     private InventoryDao inventoryDao;
 
-
     public void setup() throws SQLException {
         DataSource dataSource = connect();
         playerDao = new PlayerDaoJdbc(dataSource);
@@ -64,8 +63,9 @@ public class GameDatabaseManager {
         itemsDao.add(itemsModel, gameState.getId());
     }
 
-    public void updatePlayer(PlayerModel player) {
-        playerDao.update(player);
+    private void saveGameState(String currentMap, LocalDateTime savedAt){
+        gameState = new GameState(currentMap, savedAt, model.getId());
+        gameStateDao.add(gameState);
     }
 
     public PlayerModel getPlayer(int id) {
@@ -92,15 +92,33 @@ public class GameDatabaseManager {
         return playerDao.getAll();
     }
 
-    private void saveGameState(String currentMap, LocalDateTime savedAt){
-        gameState = new GameState(currentMap, savedAt, model.getId());
-        gameStateDao.add(gameState);
+    public boolean saveExist() {
+        return false;
     }
 
-    public void updateGameState(GameState gameState){
+    public void updateSave(Player player, String currentMap, GameMap map) {
+
+    }
+
+    private void updatePlayer(PlayerModel player) {
+        playerDao.update(player);
+    }
+
+    private void updateGameState(GameState gameState){
         gameStateDao.update(gameState);
     }
 
+    private void updateInventory(InventoryModel inventoryModel){
+        inventoryDao.update(inventoryModel, model.getId());
+    }
+
+    private void updateMonsters(MonstersModel monstersModel){
+        monstersDao.update(monstersModel, gameState.getId());
+    }
+
+    private void updateItems(ItemsModel itemsModel){
+        itemsDao.update(itemsModel, gameState.getId());
+    }
 
     private DataSource connect() throws SQLException {
         PGSimpleDataSource dataSource = new PGSimpleDataSource();
