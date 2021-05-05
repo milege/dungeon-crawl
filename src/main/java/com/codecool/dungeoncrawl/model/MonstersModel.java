@@ -32,7 +32,9 @@ public class MonstersModel {
         }
     }
 
-    private final List<MonsterPosition> monsters = new ArrayList<>();
+    private List<MonsterPosition> monsters = new ArrayList<>();
+
+    public MonstersModel() {}
 
     public MonstersModel(GameMap map) {
         Cell[][] cells = map.getCells();
@@ -48,5 +50,9 @@ public class MonstersModel {
 
     public List<MonsterPosition> getMonsters() {
         return monsters;
+    }
+
+    public void setMonsters(List<MonsterPosition> monsters) {
+        this.monsters = monsters;
     }
 }

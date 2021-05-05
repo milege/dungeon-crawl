@@ -4,6 +4,7 @@ import com.codecool.dungeoncrawl.model.MonstersModel;
 
 import javax.sql.DataSource;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MonstersDaoJdbc implements MonstersDao {
@@ -44,8 +45,22 @@ public class MonstersDaoJdbc implements MonstersDao {
     }
 
     @Override
-    public MonstersModel get(int id) {
-        return null;
+    public MonstersModel get(int gameId) {
+        try (Connection conn = dataSource.getConnection()) {
+            String sql = "SELECT monster_name, x, y FROM monsters WHERE game_id = ?";
+            List<MonstersModel.MonsterPosition> monsterPositions = new ArrayList<>();
+            MonstersModel monstersModel = new MonstersModel();
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setInt(1, gameId);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                monsterPositions.add(monstersModel.new MonsterPosition(resultSet.getString(1), resultSet.getInt(2), resultSet.getInt(3)));
+            }
+            monstersModel.setMonsters(monsterPositions);
+            return monstersModel;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
