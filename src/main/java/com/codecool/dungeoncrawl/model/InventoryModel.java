@@ -4,9 +4,10 @@ import com.codecool.dungeoncrawl.logic.items.Inventory;
 import com.codecool.dungeoncrawl.logic.items.Item;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class InventoryModel {
-    private ArrayList<String> items = new ArrayList<>();
+    private List<String> items = new ArrayList<>();
 
     public InventoryModel(Inventory inventory) {
         for (Item item : inventory.getItems()) {
@@ -14,7 +15,11 @@ public class InventoryModel {
         }
     }
 
-    public ArrayList<String> getItems() {
+    public InventoryModel(List<String> items) {
+        this.items = items;
+    }
+
+    public List<String> getItems() {
         return items;
     }
 }
