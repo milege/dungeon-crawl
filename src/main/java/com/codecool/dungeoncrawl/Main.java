@@ -3,9 +3,12 @@ package com.codecool.dungeoncrawl;
 import com.codecool.dungeoncrawl.dao.GameDatabaseManager;
 import com.codecool.dungeoncrawl.logic.*;
 import com.codecool.dungeoncrawl.logic.Cell;
-import com.codecool.dungeoncrawl.logic.actors.Player;
+import com.codecool.dungeoncrawl.logic.items.Inventory;
+import com.codecool.dungeoncrawl.model.BaseModel;
 import com.codecool.dungeoncrawl.model.GameState;
+import com.codecool.dungeoncrawl.model.InventoryModel;
 import com.codecool.dungeoncrawl.model.PlayerModel;
+import com.google.gson.Gson;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -24,6 +27,14 @@ import javafx.scene.image.Image;
 import javafx.stage.StageStyle;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Window;
+
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 
 public class Main extends Application {
@@ -46,6 +57,7 @@ public class Main extends Application {
     Button nameSubmitButton = new Button("Submit");
     Button saveGameButton = new Button("Save Game");
     Button modalButton = new Button("Load Game");
+    Button exportButton = new Button("Export game");
     Label loadGameInfoLabel = new Label("Click a number to load gamesave!");
     Image logo = new Image("/logo.png", 180, 100, true, false);
 
@@ -80,6 +92,7 @@ public class Main extends Application {
         ui.add(drinkPotionButton,0,10);
         ui.add(saveGameButton, 0,11);
         ui.add(modalButton, 0,12);
+        ui.add(exportButton, 0, 13);
 
 
         drinkPotionButton.setDisable(true);
@@ -141,6 +154,21 @@ public class Main extends Application {
             stage.initModality(Modality.NONE);
             stage.initStyle(StageStyle.UTILITY);
             stage.show();
+            ui.requestFocus();
+            refresh();
+        });
+
+        exportButton.setOnAction(onClick -> {
+            LocalDateTime localDate = LocalDateTime.now();
+            BaseModel[] models = new BaseModel[2];
+            models[0] = new GameState(currentMap, localDate, 1);
+            models[1] = new InventoryModel(map.getPlayer().getInventory());
+            String serialized = new Gson().toJson(models);
+            System.out.println(serialized);
+            BaseModel[] output = new Gson().fromJson(serialized, BaseModel[].class);
+            for (BaseModel x : output) {
+                System.out.println(x);
+            }
             ui.requestFocus();
             refresh();
         });

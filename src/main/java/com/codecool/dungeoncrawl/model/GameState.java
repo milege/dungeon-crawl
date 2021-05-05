@@ -1,5 +1,6 @@
 package com.codecool.dungeoncrawl.model;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,5 +44,4 @@ public class GameState extends BaseModel {
     public void addDiscoveredMap(String map) {
         this.discoveredMaps.add(map);
     }
-
 }

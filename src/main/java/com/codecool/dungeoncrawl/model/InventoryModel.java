@@ -6,7 +6,7 @@ import com.codecool.dungeoncrawl.logic.items.Item;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InventoryModel {
+public class InventoryModel extends BaseModel {
     private List<String> items = new ArrayList<>();
 
     public InventoryModel(Inventory inventory) {

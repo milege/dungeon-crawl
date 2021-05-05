@@ -6,7 +6,7 @@ import com.codecool.dungeoncrawl.logic.GameMap;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MonstersModel {
+public class MonstersModel extends BaseModel {
 
     public class MonsterPosition {
         private final String name;
