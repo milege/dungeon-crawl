@@ -81,6 +81,11 @@ public class GameDatabaseManager {
         gameStateDao.add(gameState);
     }
 
+    public void updateGameState(GameState gameState){
+        gameStateDao.update(gameState);
+    }
+
+
     private DataSource connect() throws SQLException {
         PGSimpleDataSource dataSource = new PGSimpleDataSource();
         String dbName = System.getenv("PSQL_DB_NAME");
