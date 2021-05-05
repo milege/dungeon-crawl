@@ -97,7 +97,17 @@ public class GameDatabaseManager {
     }
 
     public void updateSave(Player player, String currentMap, GameMap map) {
-
+        model = new PlayerModel(player);
+        updatePlayer(model);
+        LocalDateTime localDate = LocalDateTime.now();
+        gameState = new GameState(currentMap, localDate, model.getId());
+        updateGameState(gameState);
+        MonstersModel monstersModel = new MonstersModel(map);
+        updateMonsters(monstersModel);
+        ItemsModel itemsModel = new ItemsModel(map);
+        updateItems(itemsModel);
+        InventoryModel inventoryModel = new InventoryModel(player.getInventory());
+        updateInventory(inventoryModel);
     }
 
     private void updatePlayer(PlayerModel player) {
