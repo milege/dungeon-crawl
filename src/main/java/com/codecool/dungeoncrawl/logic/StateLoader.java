@@ -2,6 +2,8 @@ package com.codecool.dungeoncrawl.logic;
 
 import com.codecool.dungeoncrawl.logic.actors.*;
 import com.codecool.dungeoncrawl.logic.items.*;
+import com.codecool.dungeoncrawl.model.ItemsModel;
+import com.codecool.dungeoncrawl.model.MonstersModel;
 import com.codecool.dungeoncrawl.model.PlayerModel;
 
 import java.io.InputStream;
@@ -96,6 +98,7 @@ public class StateLoader {
         }
         return map;
     }
+
     public static void loadPlayerState(Player player, PlayerModel loadedPlayerModel, GameMap map, Inventory inventory) {
         Cell playerCell = map.getCell(loadedPlayerModel.getX(), loadedPlayerModel.getY());
         player.setCell(playerCell);
@@ -107,5 +110,39 @@ public class StateLoader {
         player.setInventory(inventory);
         map.setPlayer(player);
         playerCell.setActor(player);
+    }
+
+    public static void loadMapElements(ItemsModel items, MonstersModel monsters, GameMap map){
+        for (ItemsModel.ItemPosition item : items.getItems()) {
+            Cell cell = map.getCell(item.getX(), item.getY());
+            switch (item.getName()) {
+                case "key":
+                    cell.setItem(new Key());
+                    break;
+                case "sword":
+                    cell.setItem(new Sword());
+                    break;
+                case "war hammer":
+                    cell.setItem(new WarHammer());
+                    break;
+                case "small shield":
+                    cell.setItem(new SmallShield());
+                    break;
+                case "medium shield":
+                    cell.setItem(new MediumShield());
+                    break;
+                case "potion":
+                    cell.setItem(new Potion());
+                    break;
+                case "potion cocktail":
+                    cell.setItem(new PotionCocktail());
+                    break;
+                case "torch":
+                    cell.setItem(new Torch());
+                    break;
+                default:
+                    throw new RuntimeException("Unrecognized item: '" + item.getName() + "'");
+            }
+        }
     }
 }
