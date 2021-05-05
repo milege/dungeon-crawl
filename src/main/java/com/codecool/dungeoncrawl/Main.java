@@ -109,7 +109,11 @@ public class Main extends Application {
         });
 
         saveGameButton.setOnAction(onClick -> {
-            gameDatabaseManager.saveGame(map.getPlayer(), currentMap, map);
+            if (gameDatabaseManager.saveExist(map.getPlayer().getName())){
+                gameDatabaseManager.updateSave(map.getPlayer(), currentMap, map);
+            }else {
+                gameDatabaseManager.saveGame(map.getPlayer(), currentMap, map);
+            }
             ui.requestFocus();
             refresh();
         });
@@ -243,7 +247,7 @@ public class Main extends Application {
                 }
             }
         }
-        nameLabel.setText("" + nameField.getText());
+        nameLabel.setText("" + map.getPlayer().getName());
         healthLabel.setText("" + map.getPlayer().getHealth());
         attackLabel.setText("" + map.getPlayer().getAttackStrength());
         defenseLabel.setText("" + map.getPlayer().getDefenseStrength());

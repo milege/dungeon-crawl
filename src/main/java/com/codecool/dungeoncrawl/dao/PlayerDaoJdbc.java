@@ -99,4 +99,23 @@ public class PlayerDaoJdbc implements PlayerDao {
             throw new RuntimeException(e);
         }
     }
+
+    @Override
+    public int checkIfPlayerInDb(String name) {
+        try (Connection conn = dataSource.getConnection()) {
+            String sql = "SELECT id, player_name = ? AS match FROM player";
+            PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            statement.setString(1, name);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                if (resultSet.getBoolean("match")){
+                    return resultSet.getInt("id");
+                }
+            }
+            return 0;
+        }catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }
