@@ -247,7 +247,7 @@ public class Main extends Application {
                 }
             }
         }
-        nameLabel.setText("" + nameField.getText());
+        nameLabel.setText("" + map.getPlayer().getName());
         healthLabel.setText("" + map.getPlayer().getHealth());
         attackLabel.setText("" + map.getPlayer().getAttackStrength());
         defenseLabel.setText("" + map.getPlayer().getDefenseStrength());
