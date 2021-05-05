@@ -144,5 +144,30 @@ public class StateLoader {
                     throw new RuntimeException("Unrecognized item: '" + item.getName() + "'");
             }
         }
+        for (MonstersModel.MonsterPosition monster : monsters.getMonsters()) {
+            Cell cell = map.getCell(monster.getX(), monster.getY());
+            switch (monster.getName()) {
+                case "skeleton":
+                    map.addMonster(new Skeleton(cell));
+                    break;
+                case "zombie":
+                    map.addMonster(new Zombie(cell));
+                    break;
+                case "ghost":
+                    map.addMonster(new Ghost(cell));
+                    break;
+                case "poltergeist":
+                    map.addMonster(new Poltergeist(cell));
+                    break;
+                case "faceless":
+                    map.addMonster(new Faceless(cell));
+                    break;
+                case "devil":
+                    map.addMonster(new Devil(cell));
+                    break;
+                default:
+                    throw new RuntimeException("Unrecognized monster: '" + monster.getName() + "'");
+            }
+        }
     }
 }
