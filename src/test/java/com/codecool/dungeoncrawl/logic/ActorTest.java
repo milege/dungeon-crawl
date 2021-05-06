@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ActorTest {
     GameMap gameMap = new GameMap(3, 3, CellType.FLOOR);
+    Player player = Player.getInstance(gameMap.getCell(1, 1));
 
     @Test
     void moveUpdatesCells() {
@@ -50,5 +51,15 @@ class ActorTest {
         assertEquals(2, skeleton.getX());
         assertEquals(1, skeleton.getY());
         assertEquals(skeleton, gameMap.getCell(2, 1).getActor());
+    }
+
+    @Test
+    void getNewDirectionProvidesRandomDirectionWithinMapRange() {
+        Skeleton skeleton = new Skeleton(gameMap.getCell(2, 1));
+        int[] direction = skeleton.getNewDirection(gameMap.getWidth(), gameMap.getHeight(), player);
+        int newXCoordinate = skeleton.getX() + direction[0];
+        int newYCoordinate = skeleton.getY() + direction[1];
+
+        assertTrue(newXCoordinate < gameMap.getWidth() && newXCoordinate >= 0 && newYCoordinate < gameMap.getHeight() && newYCoordinate >= 0);
     }
 }
