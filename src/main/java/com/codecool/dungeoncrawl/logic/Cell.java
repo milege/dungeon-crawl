@@ -21,6 +21,10 @@ public class Cell implements Drawable {
         this.type = type;
     }
 
+    public CellType getType() {
+        return type;
+    }
+
     public void setActor(Actor actor) {
         this.actor = actor;
     }
