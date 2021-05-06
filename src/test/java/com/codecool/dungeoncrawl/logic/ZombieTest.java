@@ -19,4 +19,14 @@ public class ZombieTest {
         assertEquals(3, zombie.getX());
         assertEquals(1, zombie.getY());
     }
+
+    @Test
+    void zombiesMoveTowardPlayer() {
+        Zombie zombie = new Zombie(gameMap.getCell(3, 1));
+        int[] coordinates = zombie.getNewDirection(gameMap.getWidth(), gameMap.getHeight(), player);
+        zombie.move(coordinates[0], coordinates[1]);
+
+        assertEquals(2, zombie.getX());
+        assertEquals(1, zombie.getY());
+    }
 }
