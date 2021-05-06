@@ -4,10 +4,7 @@ import com.codecool.dungeoncrawl.dao.GameDatabaseManager;
 import com.codecool.dungeoncrawl.logic.*;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.items.Inventory;
-import com.codecool.dungeoncrawl.model.BaseModel;
-import com.codecool.dungeoncrawl.model.GameState;
-import com.codecool.dungeoncrawl.model.InventoryModel;
-import com.codecool.dungeoncrawl.model.PlayerModel;
+import com.codecool.dungeoncrawl.model.*;
 import com.google.gson.Gson;
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -159,16 +156,15 @@ public class Main extends Application {
         });
 
         exportButton.setOnAction(onClick -> {
-            LocalDateTime localDate = LocalDateTime.now();
-            BaseModel[] models = new BaseModel[2];
-            models[0] = new GameState(currentMap, localDate, 1);
-            models[1] = new InventoryModel(map.getPlayer().getInventory());
-            String serialized = new Gson().toJson(models);
+            PlayerModel playerModel = new PlayerModel(map.getPlayer());
+            InventoryModel inventoryModel = new InventoryModel(map.getPlayer().getInventory());
+            MonstersModel monstersModel = new MonstersModel(map);
+            ItemsModel itemsModel = new ItemsModel(map);
+            SerializationModel serializationModel = new SerializationModel(currentMap, playerModel, inventoryModel, monstersModel, itemsModel);
+            String serialized = new Gson().toJson(serializationModel);
             System.out.println(serialized);
-            BaseModel[] output = new Gson().fromJson(serialized, BaseModel[].class);
-            for (BaseModel x : output) {
-                System.out.println(x);
-            }
+            SerializationModel output = new Gson().fromJson(serialized, SerializationModel.class);
+            System.out.println(output);
             ui.requestFocus();
             refresh();
         });
