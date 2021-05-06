@@ -1,6 +1,8 @@
 package com.codecool.dungeoncrawl.logic;
 
+import com.codecool.dungeoncrawl.logic.actors.Corpse;
 import com.codecool.dungeoncrawl.logic.actors.Player;
+import com.codecool.dungeoncrawl.logic.actors.Skeleton;
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
 
@@ -10,12 +12,27 @@ import static org.junit.jupiter.api.Assertions.*;
 public class PlayerTest {
     GameMap gameMap = new GameMap(3, 3, CellType.FLOOR);
 
-    Player player;
-
     @Before
     public void resetSingleton() throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
         Field instance = Player.class.getDeclaredField("instance");
         instance.setAccessible(true);
         instance.set(null, null);
+    }
+
+    @Test
+    void canAttackMonster() throws NoSuchFieldException, IllegalAccessException {
+        resetSingleton();
+        Player player = Player.getInstance(gameMap.getCell(1,1));
+        Skeleton skeleton = new Skeleton(gameMap.getCell(2,1));
+        Cell cell = player.getCell();
+        Cell nextCell = cell.getNeighbor(1, 1);
+        player.attackMonster(skeleton, nextCell);
+
+        boolean alive = skeleton.isAlive();
+        boolean expected = false;
+
+        assertEquals(expected, alive);
+
+
     }
 }
