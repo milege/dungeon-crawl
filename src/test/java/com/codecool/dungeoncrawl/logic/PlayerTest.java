@@ -1,6 +1,7 @@
 package com.codecool.dungeoncrawl.logic;
 
 import com.codecool.dungeoncrawl.logic.actors.Corpse;
+import com.codecool.dungeoncrawl.logic.actors.Devil;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.actors.Skeleton;
 import org.junit.Before;
@@ -20,7 +21,7 @@ public class PlayerTest {
     }
 
     @Test
-    void canAttackMonster() throws NoSuchFieldException, IllegalAccessException {
+    void attackMonsterIsAliveReturnsFalse() throws NoSuchFieldException, IllegalAccessException {
         resetSingleton();
         Player player = Player.getInstance(gameMap.getCell(1,1));
         Skeleton skeleton = new Skeleton(gameMap.getCell(2,1));
@@ -32,7 +33,22 @@ public class PlayerTest {
         boolean expected = false;
 
         assertEquals(expected, alive);
+    }
 
+    @Test
+    void attackMonsterIsAliveReturnsTrue() throws NoSuchFieldException, IllegalAccessException{
+        resetSingleton();
+        Player player = Player.getInstance(gameMap.getCell(1,1));
+        Devil devil = new Devil(gameMap.getCell(2,1));
+        Cell cell = player.getCell();
+        Cell nextCell = cell.getNeighbor(1, 1);
+        player.attackMonster(devil, nextCell);
 
+        boolean alive = devil.isAlive();
+        boolean expected = true;
+
+        assertEquals(expected, alive);
     }
 }
+
+
