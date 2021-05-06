@@ -14,4 +14,24 @@ public class SerializationModel {
         this.monstersModel = monstersModel;
         this.itemsModel = itemsModel;
     }
+
+    public String getCurrentMap() {
+        return currentMap;
+    }
+
+    public PlayerModel getPlayerModel() {
+        return playerModel;
+    }
+
+    public InventoryModel getInventoryModel() {
+        return inventoryModel;
+    }
+
+    public MonstersModel getMonstersModel() {
+        return monstersModel;
+    }
+
+    public ItemsModel getItemsModel() {
+        return itemsModel;
+    }
 }
