@@ -124,13 +124,9 @@ public class Main extends Application {
                 Alert alert = new Alert(AlertType.NONE, "Do you want to overwrite your previous save?", ButtonType.YES, ButtonType.NO, ButtonType.CANCEL);
                 alert.showAndWait();
                 if (alert.getResult() == ButtonType.YES) {
-                    Alert confirmation = new Alert(AlertType.INFORMATION, "Complete");
-                    confirmation.show();
                     gameDatabaseManager.updateSave(map.getPlayer(), currentMap, map);
                 }
             }else {
-                Alert confirmation = new Alert(AlertType.INFORMATION, "Complete");
-                confirmation.show();
                 gameDatabaseManager.saveGame(map.getPlayer(), currentMap, map);
             }
             ui.requestFocus();
