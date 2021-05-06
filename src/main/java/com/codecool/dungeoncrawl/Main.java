@@ -18,16 +18,12 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
+import javafx.stage.*;
 import javafx.scene.image.Image;
-import javafx.stage.StageStyle;
 import javafx.scene.control.Alert.AlertType;
-import javafx.stage.Window;
+import org.json.simple.JSONObject;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -156,15 +152,32 @@ public class Main extends Application {
         });
 
         exportButton.setOnAction(onClick -> {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setInitialDirectory(new File("src"));
+            FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("JSON files (*.json)", "*.json");
+            fileChooser.getExtensionFilters().add(extFilter);
+            File saveFile = fileChooser.showSaveDialog(primaryStage);
+
             PlayerModel playerModel = new PlayerModel(map.getPlayer());
             InventoryModel inventoryModel = new InventoryModel(map.getPlayer().getInventory());
             MonstersModel monstersModel = new MonstersModel(map);
             ItemsModel itemsModel = new ItemsModel(map);
             SerializationModel serializationModel = new SerializationModel(currentMap, playerModel, inventoryModel, monstersModel, itemsModel);
             String serialized = new Gson().toJson(serializationModel);
-            System.out.println(serialized);
+            JSONObject serializedObj = new JSONObject();
+            serializedObj.put("SaveState", serialized);
+
+            try (FileWriter file = new FileWriter(saveFile.getAbsolutePath())) {
+                file.write(serializedObj.toJSONString());
+                file.flush();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            /*System.out.println(serialized);
             SerializationModel output = new Gson().fromJson(serialized, SerializationModel.class);
-            System.out.println(output);
+            System.out.println(output.getInventoryModel());*/
             ui.requestFocus();
             refresh();
         });
@@ -210,14 +223,13 @@ public class Main extends Application {
         for (PlayerModel model : gameDatabaseManager.getAll())
         {
             text.append("  (Player name: ")
-                    .append(model.getPlayerName().toString())
+                    .append(model.getPlayerName())
                     .append(") ")
                     .append("\n");
             modalUi.add(new Label(text.toString()), 1, i);
             text = new StringBuilder();
             i++;
         }
-        ;
         return i;
     }
 
