@@ -3,9 +3,8 @@ package com.codecool.dungeoncrawl;
 import com.codecool.dungeoncrawl.dao.GameDatabaseManager;
 import com.codecool.dungeoncrawl.logic.*;
 import com.codecool.dungeoncrawl.logic.Cell;
-import com.codecool.dungeoncrawl.logic.actors.Player;
-import com.codecool.dungeoncrawl.model.GameState;
-import com.codecool.dungeoncrawl.model.PlayerModel;
+import com.codecool.dungeoncrawl.model.*;
+import com.google.gson.Gson;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -16,18 +15,22 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
+import javafx.stage.*;
 import javafx.scene.image.Image;
-import javafx.stage.StageStyle;
 import javafx.scene.control.Alert.AlertType;
-import javafx.stage.Window;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+
+import java.io.*;
+import java.time.LocalDateTime;
 
 
 public class Main extends Application {
     GameDatabaseManager gameDatabaseManager = new GameDatabaseManager();
+    SerializeHandler serializeHandler = new SerializeHandler();
     GameMap map = MapLoader.loadMap("/map.txt", CellType.FLOOR);
     String currentMap = "/map.txt";
     GameMap oldMap;
@@ -46,8 +49,13 @@ public class Main extends Application {
     Button nameSubmitButton = new Button("Submit");
     Button saveGameButton = new Button("Save Game");
     Button modalButton = new Button("Load Game");
-    Label loadGameInfoLabel = new Label("Click a number to load gamesave!");
+    Label loadGameInfoLabel = new Label("Choose a saved player");
     Image logo = new Image("/logo.png", 180, 100, true, false);
+    MenuItem menuExport = new MenuItem("Export");
+    MenuItem menuImport = new MenuItem("Import");
+    MenuItem menuExit = new MenuItem("Cancel");
+    MenuButton menuButton = new MenuButton("File", null, menuExport, menuImport, menuExit);
+
 
     public static void main(String[] args) {
         launch(args);
@@ -80,7 +88,12 @@ public class Main extends Application {
         ui.add(drinkPotionButton,0,10);
         ui.add(saveGameButton, 0,11);
         ui.add(modalButton, 0,12);
+        ui.add(menuButton, 0, 13);
 
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setInitialDirectory(new File("src"));
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("JSON files (*.json)", "*.json");
+        fileChooser.getExtensionFilters().add(extFilter);
 
         drinkPotionButton.setDisable(true);
 
@@ -113,9 +126,13 @@ public class Main extends Application {
                 alert.showAndWait();
                 if (alert.getResult() == ButtonType.YES) {
                     gameDatabaseManager.updateSave(map.getPlayer(), currentMap, map);
+                    Alert confirmation = new Alert(AlertType.NONE, "Successful save", ButtonType.CLOSE);
+                    confirmation.show();
                 }
             }else {
                 gameDatabaseManager.saveGame(map.getPlayer(), currentMap, map);
+                Alert confirmation = new Alert(AlertType.NONE, "Successful save", ButtonType.CLOSE);
+                confirmation.show();
             }
             ui.requestFocus();
             refresh();
@@ -130,17 +147,54 @@ public class Main extends Application {
             modalUi.add(loadGameInfoLabel, 0, 0);
             loadGameInfoLabel.setStyle("-fx-font-weight: bold");
             StringBuilder text = new StringBuilder();
-            int i = 1;
-            i = listSavedGames(modalUi, text, i);
+            int savedStatesCount = gameDatabaseManager.getAll().size();
+            listSavedGames(modalUi, text, savedStatesCount);
             VBox vboxForButtons = new VBox();
-            placeLoadButtons(modalUi, i, vboxForButtons);
-            Scene scene = new Scene(modalUi);
-            Stage stage = new Stage();
-            stage.setTitle("LOAD GAME");
-            stage.setScene(scene);
-            stage.initModality(Modality.NONE);
-            stage.initStyle(StageStyle.UTILITY);
-            stage.show();
+            Stage modalStage = new Stage();
+            placeLoadButtons(modalUi, savedStatesCount, vboxForButtons, modalStage);
+            Scene modalScene = new Scene(modalUi);
+            modalStage.setTitle("LOAD GAME");
+            modalStage.setScene(modalScene);
+            modalStage.initModality(Modality.NONE);
+            modalStage.initStyle(StageStyle.UTILITY);
+            modalStage.show();
+            ui.requestFocus();
+            refresh();
+        });
+
+        menuExit.setOnAction(onClick ->{
+            ui.requestFocus();
+            refresh();
+        });
+
+        menuExport.setOnAction(onClick -> {
+            File saveFile = fileChooser.showSaveDialog(primaryStage);
+            if (saveFile != null) {
+                JSONObject serializedObj = serializeHandler.serializeSaveState(map, currentMap);
+                try (FileWriter file = new FileWriter(saveFile.getAbsolutePath())) {
+                    file.write(serializedObj.toJSONString());
+                    file.flush();
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            ui.requestFocus();
+            refresh();
+        });
+
+        menuImport.setOnAction(OnClick -> {
+            File selectedFile = fileChooser.showOpenDialog(primaryStage);
+            if (selectedFile != null) {
+                JSONParser parser = new JSONParser();
+                try {
+                    Object obj = parser.parse(new FileReader(selectedFile));
+                    SerializationModel saveModel = serializeHandler.deserializeSaveState((JSONObject) obj);
+                    map = serializeHandler.loadSaveState(saveModel, map.getPlayer());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
             ui.requestFocus();
             refresh();
         });
@@ -152,6 +206,8 @@ public class Main extends Application {
 
         Scene scene = new Scene(borderPane);
         primaryStage.setScene(scene);
+        primaryStage.show();
+
         refresh();
         scene.setOnKeyPressed(this::onKeyPressed);
 
@@ -160,11 +216,11 @@ public class Main extends Application {
         ui.requestFocus();
     }
 
-    private void placeLoadButtons(GridPane modalUi, int i, VBox vboxForButtons) {
-        for (int j = 1; j < i; j++){
+    private void placeLoadButtons(GridPane modalUi, int savedStatesCount, VBox vboxForButtons, Stage modalStage) {
+        for (int j = 1; j < savedStatesCount + 1; j++){
             Button btnNumber = new Button();
             btnNumber.setPrefWidth(220);
-            btnNumber.setText(String.valueOf(j));
+            btnNumber.setText(gameDatabaseManager.getPlayer(j).getPlayerName());
             int playerId = j;
             btnNumber.setOnAction((ActionEvent)->{
                 oldMap = map;
@@ -174,6 +230,7 @@ public class Main extends Application {
                         map, gameDatabaseManager.getInventory(playerId));
                 StateLoader.loadMapElements(gameDatabaseManager.getItems(loadedGameState.getId()),
                         gameDatabaseManager.getMonsters(loadedGameState.getId()), map);
+                modalStage.close();
                 refresh();
             });
             vboxForButtons.getChildren().add(btnNumber);
@@ -182,19 +239,17 @@ public class Main extends Application {
         }
     }
 
-    private int listSavedGames(GridPane modalUi, StringBuilder text, int i) {
-        for (PlayerModel model : gameDatabaseManager.getAll())
-        {
-            text.append("  (Player name: ")
-                    .append(model.getPlayerName().toString())
-                    .append(") ")
+    private void listSavedGames(GridPane modalUi, StringBuilder text, int savedStatesCount) {
+        for (int i = 1; i < savedStatesCount + 1; i++) {
+            LocalDateTime savedAt = gameDatabaseManager.getGameState(i).getSavedAt();
+            text.append(" Saved at:  ")
+                    .append(savedAt.toLocalDate())
+                    .append("  ")
+                    .append(savedAt.toLocalTime().withNano(0))
                     .append("\n");
             modalUi.add(new Label(text.toString()), 1, i);
             text = new StringBuilder();
-            i++;
         }
-        ;
-        return i;
     }
 
     private void onKeyPressed(KeyEvent keyEvent) {
