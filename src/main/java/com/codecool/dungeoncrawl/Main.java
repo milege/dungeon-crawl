@@ -28,6 +28,7 @@ import java.io.*;
 
 public class Main extends Application {
     GameDatabaseManager gameDatabaseManager = new GameDatabaseManager();
+    SerializeHandler serializeHandler = new SerializeHandler();
     GameMap map = MapLoader.loadMap("/map.txt", CellType.FLOOR);
     String currentMap = "/map.txt";
     GameMap oldMap;
@@ -162,29 +163,15 @@ public class Main extends Application {
             fileChooser.getExtensionFilters().add(extFilter);
             File saveFile = fileChooser.showSaveDialog(primaryStage);
             if (saveFile != null) {
+                JSONObject serializedObj = serializeHandler.serializeSaveState(map, currentMap);
+                try (FileWriter file = new FileWriter(saveFile.getAbsolutePath())) {
+                    file.write(serializedObj.toJSONString());
+                    file.flush();
 
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
-
-            PlayerModel playerModel = new PlayerModel(map.getPlayer());
-            InventoryModel inventoryModel = new InventoryModel(map.getPlayer().getInventory());
-            MonstersModel monstersModel = new MonstersModel(map);
-            ItemsModel itemsModel = new ItemsModel(map);
-            SerializationModel serializationModel = new SerializationModel(currentMap, playerModel, inventoryModel, monstersModel, itemsModel);
-            String serialized = new Gson().toJson(serializationModel);
-            JSONObject serializedObj = new JSONObject();
-            serializedObj.put("SaveState", serialized);
-
-            try (FileWriter file = new FileWriter(saveFile.getAbsolutePath())) {
-                file.write(serializedObj.toJSONString());
-                file.flush();
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            /*System.out.println(serialized);
-            SerializationModel output = new Gson().fromJson(serialized, SerializationModel.class);
-            System.out.println(output.getInventoryModel());*/
             ui.requestFocus();
             refresh();
         });
