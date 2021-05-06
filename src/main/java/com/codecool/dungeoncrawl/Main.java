@@ -3,9 +3,8 @@ package com.codecool.dungeoncrawl;
 import com.codecool.dungeoncrawl.dao.GameDatabaseManager;
 import com.codecool.dungeoncrawl.logic.*;
 import com.codecool.dungeoncrawl.logic.Cell;
-import com.codecool.dungeoncrawl.logic.actors.Player;
-import com.codecool.dungeoncrawl.model.GameState;
-import com.codecool.dungeoncrawl.model.PlayerModel;
+import com.codecool.dungeoncrawl.model.*;
+import com.google.gson.Gson;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -16,18 +15,21 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
+import javafx.stage.*;
 import javafx.scene.image.Image;
-import javafx.stage.StageStyle;
 import javafx.scene.control.Alert.AlertType;
-import javafx.stage.Window;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+
+import java.io.*;
 
 
 public class Main extends Application {
     GameDatabaseManager gameDatabaseManager = new GameDatabaseManager();
+    SerializeHandler serializeHandler = new SerializeHandler();
     GameMap map = MapLoader.loadMap("/map.txt", CellType.FLOOR);
     String currentMap = "/map.txt";
     GameMap oldMap;
@@ -48,6 +50,10 @@ public class Main extends Application {
     Button modalButton = new Button("Load Game");
     Label loadGameInfoLabel = new Label("Click a number to load gamesave!");
     Image logo = new Image("/logo.png", 180, 100, true, false);
+    MenuItem menuExport = new MenuItem("Export");
+    MenuItem menuImport = new MenuItem("Import");
+    MenuItem menuExit = new MenuItem("Cancel");
+    MenuButton menuButton = new MenuButton("File", null, menuExport, menuImport, menuExit);
 
     public static void main(String[] args) {
         launch(args);
@@ -80,7 +86,12 @@ public class Main extends Application {
         ui.add(drinkPotionButton,0,10);
         ui.add(saveGameButton, 0,11);
         ui.add(modalButton, 0,12);
+        ui.add(menuButton, 0, 13);
 
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setInitialDirectory(new File("src"));
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("JSON files (*.json)", "*.json");
+        fileChooser.getExtensionFilters().add(extFilter);
 
         drinkPotionButton.setDisable(true);
 
@@ -134,13 +145,50 @@ public class Main extends Application {
             i = listSavedGames(modalUi, text, i);
             VBox vboxForButtons = new VBox();
             placeLoadButtons(modalUi, i, vboxForButtons);
-            Scene scene = new Scene(modalUi);
+            Scene modalScene = new Scene(modalUi);
             Stage stage = new Stage();
             stage.setTitle("LOAD GAME");
-            stage.setScene(scene);
+            stage.setScene(modalScene);
             stage.initModality(Modality.NONE);
             stage.initStyle(StageStyle.UTILITY);
             stage.show();
+            ui.requestFocus();
+            refresh();
+        });
+
+        menuExit.setOnAction(onClick ->{
+            ui.requestFocus();
+            refresh();
+        });
+
+        menuExport.setOnAction(onClick -> {
+            File saveFile = fileChooser.showSaveDialog(primaryStage);
+            if (saveFile != null) {
+                JSONObject serializedObj = serializeHandler.serializeSaveState(map, currentMap);
+                try (FileWriter file = new FileWriter(saveFile.getAbsolutePath())) {
+                    file.write(serializedObj.toJSONString());
+                    file.flush();
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            ui.requestFocus();
+            refresh();
+        });
+
+        menuImport.setOnAction(OnClick -> {
+            File selectedFile = fileChooser.showOpenDialog(primaryStage);
+            if (selectedFile != null) {
+                JSONParser parser = new JSONParser();
+                try {
+                    Object obj = parser.parse(new FileReader(selectedFile));
+                    SerializationModel saveModel = serializeHandler.deserializeSaveState((JSONObject) obj);
+                    map = serializeHandler.loadSaveState(saveModel, map.getPlayer());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
             ui.requestFocus();
             refresh();
         });
@@ -152,6 +200,8 @@ public class Main extends Application {
 
         Scene scene = new Scene(borderPane);
         primaryStage.setScene(scene);
+        primaryStage.show();
+
         refresh();
         scene.setOnKeyPressed(this::onKeyPressed);
 
@@ -186,14 +236,13 @@ public class Main extends Application {
         for (PlayerModel model : gameDatabaseManager.getAll())
         {
             text.append("  (Player name: ")
-                    .append(model.getPlayerName().toString())
+                    .append(model.getPlayerName())
                     .append(") ")
                     .append("\n");
             modalUi.add(new Label(text.toString()), 1, i);
             text = new StringBuilder();
             i++;
         }
-        ;
         return i;
     }
 
