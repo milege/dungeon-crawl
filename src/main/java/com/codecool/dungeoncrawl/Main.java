@@ -55,6 +55,7 @@ public class Main extends Application {
     MenuItem menuExit = new MenuItem("Cancel");
     MenuButton menuButton = new MenuButton("File", null, menuExport, menuImport, menuExit);
 
+
     public static void main(String[] args) {
         launch(args);
     }
@@ -123,9 +124,13 @@ public class Main extends Application {
                 Alert alert = new Alert(AlertType.NONE, "Do you want to overwrite your previous save?", ButtonType.YES, ButtonType.NO, ButtonType.CANCEL);
                 alert.showAndWait();
                 if (alert.getResult() == ButtonType.YES) {
+                    Alert confirmation = new Alert(AlertType.INFORMATION, "Complete");
+                    confirmation.show();
                     gameDatabaseManager.updateSave(map.getPlayer(), currentMap, map);
                 }
             }else {
+                Alert confirmation = new Alert(AlertType.INFORMATION, "Complete");
+                confirmation.show();
                 gameDatabaseManager.saveGame(map.getPlayer(), currentMap, map);
             }
             ui.requestFocus();
@@ -144,14 +149,14 @@ public class Main extends Application {
             int i = 1;
             i = listSavedGames(modalUi, text, i);
             VBox vboxForButtons = new VBox();
-            placeLoadButtons(modalUi, i, vboxForButtons);
+            Stage modalStage = new Stage();
+            placeLoadButtons(modalUi, i, vboxForButtons, modalStage);
             Scene modalScene = new Scene(modalUi);
-            Stage stage = new Stage();
-            stage.setTitle("LOAD GAME");
-            stage.setScene(modalScene);
-            stage.initModality(Modality.NONE);
-            stage.initStyle(StageStyle.UTILITY);
-            stage.show();
+            modalStage.setTitle("LOAD GAME");
+            modalStage.setScene(modalScene);
+            modalStage.initModality(Modality.NONE);
+            modalStage.initStyle(StageStyle.UTILITY);
+            modalStage.show();
             ui.requestFocus();
             refresh();
         });
@@ -210,7 +215,7 @@ public class Main extends Application {
         ui.requestFocus();
     }
 
-    private void placeLoadButtons(GridPane modalUi, int i, VBox vboxForButtons) {
+    private void placeLoadButtons(GridPane modalUi, int i, VBox vboxForButtons, Stage modalStage) {
         for (int j = 1; j < i; j++){
             Button btnNumber = new Button();
             btnNumber.setPrefWidth(220);
@@ -224,6 +229,7 @@ public class Main extends Application {
                         map, gameDatabaseManager.getInventory(playerId));
                 StateLoader.loadMapElements(gameDatabaseManager.getItems(loadedGameState.getId()),
                         gameDatabaseManager.getMonsters(loadedGameState.getId()), map);
+                modalStage.close();
                 refresh();
             });
             vboxForButtons.getChildren().add(btnNumber);
