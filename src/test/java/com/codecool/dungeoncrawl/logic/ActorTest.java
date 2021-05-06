@@ -1,7 +1,13 @@
 package com.codecool.dungeoncrawl.logic;
 
+
+import com.codecool.dungeoncrawl.logic.actors.Player;
+import com.codecool.dungeoncrawl.logic.actors.Skeleton;
+import org.junit.Before;
 import com.codecool.dungeoncrawl.logic.actors.*;
 import org.junit.jupiter.api.Test;
+
+import java.lang.reflect.Field;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -9,8 +15,16 @@ class ActorTest {
     GameMap gameMap = new GameMap(3, 3, CellType.FLOOR);
     Player player = Player.getInstance(gameMap.getCell(1, 1));
 
+    @Before
+    public void resetSingleton() throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
+        Field instance = Player.class.getDeclaredField("instance");
+        instance.setAccessible(true);
+        instance.set(null, null);
+    }
+
     @Test
-    void moveUpdatesCells() {
+    void moveUpdatesCells() throws NoSuchFieldException, IllegalAccessException {
+        resetSingleton();
         Player player = Player.getInstance(gameMap.getCell(1, 1));
         player.move(1, 0);
 
@@ -21,7 +35,8 @@ class ActorTest {
     }
 
     @Test
-    void cannotMoveIntoWall() {
+    void cannotMoveIntoWall() throws NoSuchFieldException, IllegalAccessException {
+        resetSingleton();
         gameMap.getCell(2, 1).setType(CellType.WALL);
         Player player = Player.getInstance(gameMap.getCell(1, 1));
         player.move(1, 0);
@@ -31,7 +46,8 @@ class ActorTest {
     }
 
     @Test
-    void cannotMoveOutOfMap() {
+    void cannotMoveOutOfMap() throws NoSuchFieldException, IllegalAccessException {
+        resetSingleton();
         Player player = Player.getInstance(gameMap.getCell(2, 1));
         player.move(1, 0);
 
@@ -40,7 +56,11 @@ class ActorTest {
     }
 
     @Test
-    void cannotMoveIntoAnotherActor() {
+
+    void cannotMoveIntoAnotherActor() throws NoSuchFieldException, IllegalAccessException {
+        resetSingleton();
+        Player player = Player.getInstance(gameMap.getCell(1, 1));
+
         Ghost ghost = new Ghost(gameMap.getCell(1,1));
         Skeleton skeleton = new Skeleton(gameMap.getCell(2, 1));
         ghost.move(1, 0);
