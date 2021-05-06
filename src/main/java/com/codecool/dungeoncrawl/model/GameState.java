@@ -8,7 +8,6 @@ import java.util.List;
 public class GameState extends BaseModel {
     private LocalDateTime savedAt;
     private String currentMap;
-    private List<String> discoveredMaps = new ArrayList<>();
     private int playerId;
 
     public GameState(String currentMap, LocalDateTime savedAt, int playerId) {
@@ -35,13 +34,5 @@ public class GameState extends BaseModel {
 
     public void setCurrentMap(String currentMap) {
         this.currentMap = currentMap;
-    }
-
-    public List<String> getDiscoveredMaps() {
-        return discoveredMaps;
-    }
-
-    public void addDiscoveredMap(String map) {
-        this.discoveredMaps.add(map);
     }
 }
