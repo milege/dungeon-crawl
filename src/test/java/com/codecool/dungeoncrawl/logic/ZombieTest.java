@@ -29,4 +29,13 @@ public class ZombieTest {
         assertEquals(2, zombie.getX());
         assertEquals(1, zombie.getY());
     }
+
+    @Test
+    void zombiesCannotStepIntoWall() {
+        Zombie zombie = new Zombie(gameMap.getCell(3, 1));
+        gameMap.getCell(2, 1).setType(CellType.WALL);
+        zombie.move(-1, 1);
+
+        assertNull(gameMap.getCell(2, 1).getActor());
+    }
 }
