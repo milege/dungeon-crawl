@@ -1,8 +1,6 @@
 package com.codecool.dungeoncrawl.logic;
 
-import com.codecool.dungeoncrawl.logic.actors.Ghost;
-import com.codecool.dungeoncrawl.logic.actors.Player;
-import com.codecool.dungeoncrawl.logic.actors.Skeleton;
+import com.codecool.dungeoncrawl.logic.actors.*;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -62,5 +60,13 @@ class ActorTest {
         int newYCoordinate = skeleton.getY() + direction[1];
 
         assertTrue(newXCoordinate < gameMap.getWidth() && newXCoordinate >= 0 && newYCoordinate < gameMap.getHeight() && newYCoordinate >= 0);
+    }
+
+    @Test
+    void CorpseDoesntMove() {
+        Corpse corpse = new Corpse(gameMap.getCell(1, 1));
+        corpse.move(-1, 0);
+
+        assertNull(gameMap.getCell(0, 1).getActor());
     }
 }
