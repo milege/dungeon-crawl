@@ -1,26 +1,23 @@
 package com.codecool.dungeoncrawl.logic;
 
-import com.codecool.dungeoncrawl.logic.items.MediumShield;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class MapLoaderTest {
+public class StateLoaderTest {
 
     @Test
     void UnknownCharacterOnMapThrowsException() {
-        assertThrows(RuntimeException.class, () -> MapLoader.loadMap("/test.txt", CellType.FLOOR));
+        assertThrows(RuntimeException.class, () -> StateLoader.loadMapState("/test.txt"));
     }
 
     @Test
     void loadMapPlacesCellsOnMap() {
-        GameMap gameMap = MapLoader.loadMap("/map2.txt", CellType.FLOOR);
-        MediumShield mediumShield = new MediumShield();
-        String expected = mediumShield.getTileName();
+        GameMap gameMap = StateLoader.loadMapState("/map2.txt");
 
         assertEquals(CellType.WALLFENCE, gameMap.getCell(0, 0).getType());
         assertEquals(CellType.EMPTY, gameMap.getCell(14, 0).getType());
         assertEquals(CellType.FLOOR, gameMap.getCell(2, 2).getType());
-        assertEquals(expected, gameMap.getCell(4, 22).getItem().getTileName());
     }
+
 }
