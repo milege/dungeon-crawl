@@ -21,10 +21,10 @@ public class PlayerTest {
     }
 
     @Test
-    void attackMonsterIsAliveReturnsFalse() throws NoSuchFieldException, IllegalAccessException {
+    void attackMonsterIsMonsterAliveReturnsFalse() throws NoSuchFieldException, IllegalAccessException {
         resetSingleton();
-        Player player = Player.getInstance(gameMap.getCell(1,1));
-        Skeleton skeleton = new Skeleton(gameMap.getCell(2,1));
+        Player player = Player.getInstance(gameMap.getCell(1, 1));
+        Skeleton skeleton = new Skeleton(gameMap.getCell(2, 1));
         Cell cell = player.getCell();
         Cell nextCell = cell.getNeighbor(1, 1);
         player.attackMonster(skeleton, nextCell);
@@ -36,10 +36,10 @@ public class PlayerTest {
     }
 
     @Test
-    void attackMonsterIsAliveReturnsTrue() throws NoSuchFieldException, IllegalAccessException{
+    void attackMonsterIsMonsterAliveReturnsTrue() throws NoSuchFieldException, IllegalAccessException {
         resetSingleton();
-        Player player = Player.getInstance(gameMap.getCell(1,1));
-        Devil devil = new Devil(gameMap.getCell(2,1));
+        Player player = Player.getInstance(gameMap.getCell(1, 1));
+        Devil devil = new Devil(gameMap.getCell(2, 1));
         Cell cell = player.getCell();
         Cell nextCell = cell.getNeighbor(1, 1);
         player.attackMonster(devil, nextCell);
@@ -49,6 +49,36 @@ public class PlayerTest {
 
         assertEquals(expected, alive);
     }
-}
 
+
+    @Test
+    void attackMonsterIsPlayerAliveReturnsTrue() throws NoSuchFieldException, IllegalAccessException {
+        resetSingleton();
+        Player player = Player.getInstance(gameMap.getCell(1, 1));
+        Skeleton skeleton = new Skeleton(gameMap.getCell(2, 1));
+        Cell cell = player.getCell();
+        Cell nextCell = cell.getNeighbor(1, 1);
+        player.attackMonster(skeleton, nextCell);
+
+        boolean dead = player.isAlive();
+        boolean expected = true;
+
+        assertEquals(expected, dead);
+    }
+
+    @Test
+    void attackMonsterIsPlayerAliveReturnsFalse() throws NoSuchFieldException, IllegalAccessException {
+        resetSingleton();
+        Player player = Player.getInstance(gameMap.getCell(1, 1));
+        Devil devil = new Devil(gameMap.getCell(2, 1));
+        Cell cell = player.getCell();
+        Cell nextCell = cell.getNeighbor(1, 1);
+        player.attackMonster(devil, nextCell);
+
+        boolean dead = player.isAlive();
+        boolean expected = false;
+
+        assertEquals(expected, dead);
+    }
+}
 
