@@ -29,6 +29,7 @@ import java.time.LocalDateTime;
 
 
 public class Main extends Application {
+    private static final int LOAD_BUTTON_WIDTH = 220;
     GameDatabaseManager gameDatabaseManager = new GameDatabaseManager();
     SerializeHandler serializeHandler = new SerializeHandler();
     GameMap map = MapLoader.loadMap("/map.txt", CellType.FLOOR);
@@ -217,12 +218,12 @@ public class Main extends Application {
     }
 
     private void placeLoadButtons(GridPane modalUi, int savedStatesCount, VBox vboxForButtons, Stage modalStage) {
-        for (int j = 1; j < savedStatesCount + 1; j++){
-            Button btnNumber = new Button();
-            btnNumber.setPrefWidth(220);
-            btnNumber.setText(gameDatabaseManager.getPlayer(j).getPlayerName());
-            int playerId = j;
-            btnNumber.setOnAction((ActionEvent)->{
+        for (int buttonIndex = 1; buttonIndex < savedStatesCount + 1; buttonIndex++){
+            Button loadButton = new Button();
+            loadButton.setPrefWidth(LOAD_BUTTON_WIDTH);
+            loadButton.setText(gameDatabaseManager.getPlayer(buttonIndex).getPlayerName());
+            int playerId = buttonIndex;
+            loadButton.setOnAction((ActionEvent)->{
                 oldMap = map;
                 GameState loadedGameState = gameDatabaseManager.getGameState(playerId);
                 map = StateLoader.loadMapState(loadedGameState.getCurrentMap());
@@ -233,8 +234,8 @@ public class Main extends Application {
                 modalStage.close();
                 refresh();
             });
-            vboxForButtons.getChildren().add(btnNumber);
-            modalUi.add(vboxForButtons, 0,j);
+            vboxForButtons.getChildren().add(loadButton);
+            modalUi.add(vboxForButtons, 0,buttonIndex);
             vboxForButtons = new VBox();
         }
     }
