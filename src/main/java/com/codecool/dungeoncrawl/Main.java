@@ -22,6 +22,7 @@ import javafx.stage.*;
 import javafx.scene.image.Image;
 import javafx.scene.control.Alert.AlertType;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
 import java.io.*;
 
@@ -87,6 +88,10 @@ public class Main extends Application {
         ui.add(modalButton, 0,12);
         ui.add(menuButton, 0, 13);
 
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setInitialDirectory(new File("src"));
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("JSON files (*.json)", "*.json");
+        fileChooser.getExtensionFilters().add(extFilter);
 
         drinkPotionButton.setDisable(true);
 
@@ -157,10 +162,6 @@ public class Main extends Application {
         });
 
         menuExport.setOnAction(onClick -> {
-            FileChooser fileChooser = new FileChooser();
-            fileChooser.setInitialDirectory(new File("src"));
-            FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("JSON files (*.json)", "*.json");
-            fileChooser.getExtensionFilters().add(extFilter);
             File saveFile = fileChooser.showSaveDialog(primaryStage);
             if (saveFile != null) {
                 JSONObject serializedObj = serializeHandler.serializeSaveState(map, currentMap);
@@ -169,6 +170,22 @@ public class Main extends Application {
                     file.flush();
 
                 } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            ui.requestFocus();
+            refresh();
+        });
+
+        menuImport.setOnAction(OnClick -> {
+            File selectedFile = fileChooser.showOpenDialog(primaryStage);
+            if (selectedFile != null) {
+                JSONParser parser = new JSONParser();
+                try {
+                    Object obj = parser.parse(new FileReader(selectedFile));
+                    SerializationModel saveModel = serializeHandler.deserializeSaveState((JSONObject) obj);
+                    map = serializeHandler.loadSaveState(saveModel, map.getPlayer());
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
