@@ -3,7 +3,6 @@ package com.codecool.dungeoncrawl;
 import com.codecool.dungeoncrawl.dao.GameDatabaseManager;
 import com.codecool.dungeoncrawl.logic.*;
 import com.codecool.dungeoncrawl.logic.Cell;
-import com.codecool.dungeoncrawl.logic.items.Inventory;
 import com.codecool.dungeoncrawl.model.*;
 import com.google.gson.Gson;
 import javafx.application.Application;
@@ -16,6 +15,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.*;
@@ -24,10 +24,6 @@ import javafx.scene.control.Alert.AlertType;
 import org.json.simple.JSONObject;
 
 import java.io.*;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 
 public class Main extends Application {
@@ -50,9 +46,12 @@ public class Main extends Application {
     Button nameSubmitButton = new Button("Submit");
     Button saveGameButton = new Button("Save Game");
     Button modalButton = new Button("Load Game");
-    Button exportButton = new Button("Export game");
     Label loadGameInfoLabel = new Label("Click a number to load gamesave!");
     Image logo = new Image("/logo.png", 180, 100, true, false);
+    MenuItem menuExport = new MenuItem("Export");
+    MenuItem menuImport = new MenuItem("Import");
+    MenuItem menuExit = new MenuItem("Cancel");
+    MenuButton menuButton = new MenuButton("File", null, menuExport, menuImport, menuExit);
 
     public static void main(String[] args) {
         launch(args);
@@ -85,7 +84,7 @@ public class Main extends Application {
         ui.add(drinkPotionButton,0,10);
         ui.add(saveGameButton, 0,11);
         ui.add(modalButton, 0,12);
-        ui.add(exportButton, 0, 13);
+        ui.add(menuButton, 0, 13);
 
 
         drinkPotionButton.setDisable(true);
@@ -140,10 +139,10 @@ public class Main extends Application {
             i = listSavedGames(modalUi, text, i);
             VBox vboxForButtons = new VBox();
             placeLoadButtons(modalUi, i, vboxForButtons);
-            Scene scene = new Scene(modalUi);
+            Scene modalScene = new Scene(modalUi);
             Stage stage = new Stage();
             stage.setTitle("LOAD GAME");
-            stage.setScene(scene);
+            stage.setScene(modalScene);
             stage.initModality(Modality.NONE);
             stage.initStyle(StageStyle.UTILITY);
             stage.show();
@@ -151,12 +150,20 @@ public class Main extends Application {
             refresh();
         });
 
-        exportButton.setOnAction(onClick -> {
+        menuExit.setOnAction(onClick ->{
+            ui.requestFocus();
+            refresh();
+        });
+
+        menuExport.setOnAction(onClick -> {
             FileChooser fileChooser = new FileChooser();
             fileChooser.setInitialDirectory(new File("src"));
             FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("JSON files (*.json)", "*.json");
             fileChooser.getExtensionFilters().add(extFilter);
             File saveFile = fileChooser.showSaveDialog(primaryStage);
+            if (saveFile != null) {
+
+            }
 
             PlayerModel playerModel = new PlayerModel(map.getPlayer());
             InventoryModel inventoryModel = new InventoryModel(map.getPlayer().getInventory());
@@ -189,6 +196,8 @@ public class Main extends Application {
 
         Scene scene = new Scene(borderPane);
         primaryStage.setScene(scene);
+        primaryStage.show();
+
         refresh();
         scene.setOnKeyPressed(this::onKeyPressed);
 
