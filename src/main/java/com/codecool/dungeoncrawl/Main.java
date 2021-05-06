@@ -25,6 +25,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 import java.io.*;
+import java.time.LocalDateTime;
 
 
 public class Main extends Application {
@@ -48,7 +49,7 @@ public class Main extends Application {
     Button nameSubmitButton = new Button("Submit");
     Button saveGameButton = new Button("Save Game");
     Button modalButton = new Button("Load Game");
-    Label loadGameInfoLabel = new Label("Click a number to load gamesave!");
+    Label loadGameInfoLabel = new Label("Choose a saved player");
     Image logo = new Image("/logo.png", 180, 100, true, false);
     MenuItem menuExport = new MenuItem("Export");
     MenuItem menuImport = new MenuItem("Import");
@@ -146,11 +147,11 @@ public class Main extends Application {
             modalUi.add(loadGameInfoLabel, 0, 0);
             loadGameInfoLabel.setStyle("-fx-font-weight: bold");
             StringBuilder text = new StringBuilder();
-            int i = 1;
-            i = listSavedGames(modalUi, text, i);
+            int savedStatesCount = gameDatabaseManager.getAll().size();
+            listSavedGames(modalUi, text, savedStatesCount);
             VBox vboxForButtons = new VBox();
             Stage modalStage = new Stage();
-            placeLoadButtons(modalUi, i, vboxForButtons, modalStage);
+            placeLoadButtons(modalUi, savedStatesCount, vboxForButtons, modalStage);
             Scene modalScene = new Scene(modalUi);
             modalStage.setTitle("LOAD GAME");
             modalStage.setScene(modalScene);
@@ -215,11 +216,11 @@ public class Main extends Application {
         ui.requestFocus();
     }
 
-    private void placeLoadButtons(GridPane modalUi, int i, VBox vboxForButtons, Stage modalStage) {
-        for (int j = 1; j < i; j++){
+    private void placeLoadButtons(GridPane modalUi, int savedStatesCount, VBox vboxForButtons, Stage modalStage) {
+        for (int j = 1; j < savedStatesCount + 1; j++){
             Button btnNumber = new Button();
             btnNumber.setPrefWidth(220);
-            btnNumber.setText(String.valueOf(j));
+            btnNumber.setText(gameDatabaseManager.getPlayer(j).getPlayerName());
             int playerId = j;
             btnNumber.setOnAction((ActionEvent)->{
                 oldMap = map;
@@ -238,18 +239,17 @@ public class Main extends Application {
         }
     }
 
-    private int listSavedGames(GridPane modalUi, StringBuilder text, int i) {
-        for (PlayerModel model : gameDatabaseManager.getAll())
-        {
-            text.append("  (Player name: ")
-                    .append(model.getPlayerName())
-                    .append(") ")
+    private void listSavedGames(GridPane modalUi, StringBuilder text, int savedStatesCount) {
+        for (int i = 1; i < savedStatesCount + 1; i++) {
+            LocalDateTime savedAt = gameDatabaseManager.getGameState(i).getSavedAt();
+            text.append(" Saved at:  ")
+                    .append(savedAt.toLocalDate())
+                    .append("  ")
+                    .append(savedAt.toLocalTime().withNano(0))
                     .append("\n");
             modalUi.add(new Label(text.toString()), 1, i);
             text = new StringBuilder();
-            i++;
         }
-        return i;
     }
 
     private void onKeyPressed(KeyEvent keyEvent) {
