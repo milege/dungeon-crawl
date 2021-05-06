@@ -125,9 +125,13 @@ public class Main extends Application {
                 alert.showAndWait();
                 if (alert.getResult() == ButtonType.YES) {
                     gameDatabaseManager.updateSave(map.getPlayer(), currentMap, map);
+                    Alert confirmation = new Alert(AlertType.NONE, "Successful save", ButtonType.CLOSE);
+                    confirmation.show();
                 }
             }else {
                 gameDatabaseManager.saveGame(map.getPlayer(), currentMap, map);
+                Alert confirmation = new Alert(AlertType.NONE, "Successful save", ButtonType.CLOSE);
+                confirmation.show();
             }
             ui.requestFocus();
             refresh();
