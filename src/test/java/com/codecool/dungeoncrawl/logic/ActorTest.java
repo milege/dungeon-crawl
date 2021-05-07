@@ -30,7 +30,7 @@ class ActorTest {
 
         assertEquals(2, player.getX());
         assertEquals(1, player.getY());
-        assertEquals(null, gameMap.getCell(1, 1).getActor());
+        assertNull(gameMap.getCell(1, 1).getActor());
         assertEquals(player, gameMap.getCell(2, 1).getActor());
     }
 
@@ -59,7 +59,6 @@ class ActorTest {
 
     void cannotMoveIntoAnotherActor() throws NoSuchFieldException, IllegalAccessException {
         resetSingleton();
-        Player player = Player.getInstance(gameMap.getCell(1, 1));
 
         Ghost ghost = new Ghost(gameMap.getCell(1,1));
         Skeleton skeleton = new Skeleton(gameMap.getCell(2, 1));

@@ -1,12 +1,10 @@
 package com.codecool.dungeoncrawl.logic;
 
-import com.codecool.dungeoncrawl.logic.actors.Player;
-import com.codecool.dungeoncrawl.logic.actors.Skeleton;
+
 import com.codecool.dungeoncrawl.logic.items.Inventory;
 import com.codecool.dungeoncrawl.logic.items.Item;
 import com.codecool.dungeoncrawl.logic.items.Sword;
 import com.codecool.dungeoncrawl.logic.items.WarHammer;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -70,7 +68,7 @@ class InventoryTest {
     void getItemsExistingItemReturnsItems() {
         WarHammer warHammer = new WarHammer();
         inventory.addToInventory(warHammer);
-        ArrayList<Item> expected = new ArrayList<Item>();
+        ArrayList<Item> expected = new ArrayList<>();
         expected.add(sword);
         expected.add(warHammer);
         assertEquals(expected, inventory.getItems());
@@ -79,7 +77,7 @@ class InventoryTest {
     @Test
     void getItemsEmptyInventoryReturnsEmptyArrayList() {
         inventory = new Inventory();
-        ArrayList<Item> expected = new ArrayList<Item>();
+        ArrayList<Item> expected = new ArrayList<>();
         assertEquals(expected, inventory.getItems());
     }
 
