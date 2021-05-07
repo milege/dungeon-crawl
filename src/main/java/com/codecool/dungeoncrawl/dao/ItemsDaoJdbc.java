@@ -1,6 +1,5 @@
 package com.codecool.dungeoncrawl.dao;
 
-import com.codecool.dungeoncrawl.logic.items.Item;
 import com.codecool.dungeoncrawl.model.ItemsModel;
 
 import javax.sql.DataSource;
@@ -63,10 +62,5 @@ public class ItemsDaoJdbc implements ItemsDao {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    @Override
-    public List<ItemsModel> getAll() {
-        return null;
     }
 }

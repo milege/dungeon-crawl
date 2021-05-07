@@ -62,9 +62,4 @@ public class MonstersDaoJdbc implements MonstersDao {
             throw new RuntimeException(e);
         }
     }
-
-    @Override
-    public List<MonstersModel> getAll() {
-        return null;
-    }
 }

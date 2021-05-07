@@ -63,9 +63,4 @@ public class GameStateDaoJdbc implements GameStateDao {
             throw new RuntimeException(e);
         }
     }
-
-    @Override
-    public List<GameState> getAll() {
-        return null;
-    }
 }
