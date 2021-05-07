@@ -109,6 +109,7 @@ public class StateLoader {
         player.setAttackStrength(loadedPlayerModel.getAttack());
         player.setDefenseStrength(loadedPlayerModel.getDefense());
         player.setInventory(loadInventory(inventoryModel));
+        player.setAlive(true);
         map.setPlayer(player);
         playerCell.setActor(player);
     }
