@@ -7,6 +7,33 @@ public class PlayerModel extends BaseModel {
     private int hp;
     private int x;
     private int y;
+    private int defense;
+    private int attack;
+    private int vision;
+
+    public int getVision() {
+        return vision;
+    }
+
+    public void setVision(int vision) {
+        this.vision = vision;
+    }
+
+    public int getDefense() {
+        return defense;
+    }
+
+    public void setDefense(int defense) {
+        this.defense = defense;
+    }
+
+    public int getAttack() {
+        return attack;
+    }
+
+    public void setAttack(int attack) {
+        this.attack = attack;
+    }
 
     public PlayerModel(String playerName, int x, int y) {
         this.playerName = playerName;
@@ -18,17 +45,15 @@ public class PlayerModel extends BaseModel {
         this.playerName = player.getName();
         this.x = player.getX();
         this.y = player.getY();
-
         this.hp = player.getHealth();
+        this.defense = player.getDefenseStrength();
+        this.attack = player.getAttackStrength();
+        this.vision = player.getVision();
 
     }
 
     public String getPlayerName() {
         return playerName;
-    }
-
-    public void setPlayerName(String playerName) {
-        this.playerName = playerName;
     }
 
     public int getHp() {
